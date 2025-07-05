@@ -26,10 +26,10 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
     // get the file extension from the original name last element of the split array
     let ext = file.originalname.split('.').pop().toLowerCase();
-    if (file.fieldname === 'photo' && !['.jpg', '.jpeg', '.png', '.gif'].includes(ext)) {
+    if (file.fieldname === 'photo' && !['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
         return cb(new Error('Invalid image format'), false);
     }
-    if (file.fieldname === 'resume' && !['.pdf', '.doc', '.docx', '.txt'].includes(ext)) {
+    if (file.fieldname === 'resume' && !['pdf', 'doc', 'docx', 'txt'].includes(ext)) {
         return cb(new Error('Invalid resume format'), false);
     }
     cb(null, true);

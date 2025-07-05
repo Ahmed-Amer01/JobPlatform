@@ -1,6 +1,6 @@
 const express = require('express');
 const verifyToken = require('../middlewares/verifyToken');
-const allowTo = require('../middlewares/allowedTo');
+const allowedTo = require('../middlewares/allowedTo');
 const upload = require('../middlewares/upload');
 const adminController = require('../controllers/adminController');
 

@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please provide your phone number'],
         validate: {
             validator: function(v) {
-                return /^\+?[1-9]\d{1,14}$/.test(v); // Validate E.164 format
+                return /^(\+)?\d{1,15}$/.test(v);  // Validate E.164 format
             },
             message: 'Please provide a valid phone number'
         }
@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: '/uploads/photos/defaultUserPhoto.jpg',
+        default: '/uploads/photos/defaultUserPhoto.jpeg',
         validate: {
             validator: function(v) {
             return /\.(jpg|jpeg|png|gif)$/i.test(v) || validator.isURL(v);

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 // get all users
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await Admin.find();
         res.status(200).json({
             status: 'success',
             data: {
@@ -22,7 +22,7 @@ const getAllUsers = async (req, res) => {
 // Get all candidates and employers
 const getAllCandidates = async (req, res) => {
     try {
-        const candidates = await User.find({ role: 'candidate' });
+        const candidates = await Admin.find({ role: 'candidate' });
         res.status(200).json({
             status: 'success',
             data: {
@@ -39,7 +39,7 @@ const getAllCandidates = async (req, res) => {
 
 const getAllEmployers = async (req, res) => {
     try {
-        const employers = await User.find({ role: 'employer' });
+        const employers = await Admin.find({ role: 'employer' });
         res.status(200).json({
             status: 'success',
             data: {
@@ -190,15 +190,14 @@ const updateAdmin = async (req, res) => {
 // Delete an admin
 const deleteAdmin = async (req, res) => {
     try {
-        const user = await Admin.findById(req.params.id);
+        const user = await Admin.findByIdAndDelete(req.params.id);
         if (!user || user.role !== 'admin') {
             return res.status(404).json({
                 status: 'fail',
-                message: 'Admin not found'
+                message: 'User not found'
             });
         }
         
-        await user.remove();
         res.status(204).json({
             status: 'success',
             data: null

@@ -71,7 +71,7 @@ const updateUser = async (req, res) => {
 // delete user
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id || req.user.id);
+    let user = await User.findByIdAndDelete(req.user._id || req.user.id);
     if (!user) {
       return res.status(404).json({ 
             status: 'fail', 
@@ -79,11 +79,8 @@ const deleteUser = async (req, res) => {
         });
     }
 
-    await user.remove();
-
     res.status(204).json({ 
-        status: 'success', 
-        data: null 
+        status: 'success'
     });
   } catch (error) {
     res.status(500).json({ 
