@@ -24,8 +24,12 @@ const applicationSchema = new mongoose.Schema({
     },
     coverLetter: {
         type: String,
-        required: [true, 'Please provide a cover letter'],
-        maxlength: [500, 'Cover letter cannot exceed 500 characters']
+        validate: {
+            validator: function(v) {
+            return /\.(pdf|docx?|txt)$/i.test(v) || validator.isURL(v);
+            },
+            message: 'Please provide a valid resume file or URL' // Validate for resume file types on file name or URL
+        }
     },
     status: {
         type: String,

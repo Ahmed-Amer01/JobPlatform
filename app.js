@@ -3,6 +3,7 @@ const connectDB = require('./db/connection');
 const authRoutes = require('./routes/authRoute');
 const adminRoutes = require('./routes/adminRoute');
 const userRoutes = require('./routes/userRoute');
+const jobRoutes = require('/routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoute');
 
 require('dotenv').config();
@@ -15,6 +16,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api/admins', adminRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/jobs', jobRoutes);
 app.use('/api/application', applicationRoutes);
 
 
