@@ -12,6 +12,11 @@ const applyForJob = async (req, res) => {
       return res.status(404).json({ status: 'fail', message: 'Job not found' });
     }
 
+    if (!job.isActive) {
+      return res.status(400).json({ status: 'fail', message: 'This job is no longer active' });
+    }
+
+
     const existingApp = await Application.findOne({ jobId, candidateId });
     if (existingApp) {
       return res.status(400).json({ status: 'fail', message: 'You already applied for this job' });
@@ -32,6 +37,9 @@ const applyForJob = async (req, res) => {
     });
 
     const savedApp = await application.save();
+    job.applications.push(savedApp._id);
+    await job.save();
+
     res.status(201).json({ status: 'success', data: savedApp });
   } catch (err) {
     res.status(400).json({ status: 'error', message: err.message });

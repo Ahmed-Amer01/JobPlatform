@@ -131,7 +131,8 @@ const deleteJob = async (req, res) => {
             });
         }
 
-        await job.remove();
+        await Job.findByIdAndDelete(req.params.id);
+        await Application.deleteMany({ jobId: job._id });
 
         res.status(204).json({ status: 'success', data: null });
     } catch (err) {
