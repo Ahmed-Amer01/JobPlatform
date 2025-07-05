@@ -1,0 +1,49 @@
+const Application = require('../models/application.model');
+
+// Create a new application
+exports.createApplication = async (req, res) => {
+  try {
+    const { jobId, candidateId, resume, coverLetter } = req.body;
+
+    const application = new Application({ jobId, candidateId, resume, coverLetter });
+    const savedApp = await application.save();
+
+    res.status(201).json(savedApp);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Get applications by candidate
+exports.getByCandidate = async (req, res) => {
+  try {
+    const apps = await Application.find({ candidateId: req.params.candidateId }).populate('jobId');
+    res.json(apps);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get applications by job
+exports.getByJob = async (req, res) => {
+  try {
+    const apps = await Application.find({ jobId: req.params.jobId }).populate('candidateId');
+    res.json(apps);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Update application status
+exports.updateStatus = async (req, res) => {
+  try {
+    const updated = await Application.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true, runValidators: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
