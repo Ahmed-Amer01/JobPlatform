@@ -6,13 +6,13 @@
           <h4 class="mb-0">Create an Account</h4>
         </div>
         <div class="card-body p-4">
-          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
+          <form [formGroup]="signupForm" (ngSubmit)="signUp()" enctype="multipart/form-data" novalidate>
 
             <!-- First Name -->
             <div class="mb-3">
               <label class="form-label">First Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" formControlName="firstName" placeholder="Enter first name">
-              @if(submitted && f['firstName'].errors?.['required']) {
+              @if(submitted && formControls['firstName'].errors?.['required']) {
                 <div class="text-danger small">First name is required</div>
               }
             </div>
@@ -21,7 +21,7 @@
             <div class="mb-3">
               <label class="form-label">Last Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" formControlName="lastName" placeholder="Enter last name">
-              @if(submitted && f['lastName'].errors?.['required']) {
+              @if(submitted && formControls['lastName'].errors?.['required']) {
                 <div class="text-danger small">Last name is required</div>
               }
             </div>
@@ -30,10 +30,10 @@
             <div class="mb-3">
               <label class="form-label">Email <span class="text-danger">*</span></label>
               <input type="email" class="form-control" formControlName="email" placeholder="Enter email">
-              @if(submitted && f['email'].errors) {
+              @if(submitted && formControls['email'].errors) {
                 <div class="text-danger small">
-                  @if(f['email'].errors['required']) { Email is required }
-                  @if(f['email'].errors['email']) { Enter a valid email }
+                  @if(formControls['email'].errors['required']) { Email is required }
+                  @if(formControls['email'].errors['email']) { Enter a valid email }
                 </div>
               }
             </div>
@@ -42,10 +42,10 @@
             <div class="mb-3">
               <label class="form-label">Password <span class="text-danger">*</span></label>
               <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
-              @if(submitted && f['password'].errors) {
+              @if(submitted && formControls['password'].errors) {
                 <div class="text-danger small">
-                  @if(f['password'].errors['required']) { Password is required }
-                  @if(f['password'].errors['minlength']) { Password must be at least 6 characters }
+                  @if(formControls['password'].errors['required']) { Password is required }
+                  @if(formControls['password'].errors['minlength']) { Password must be at least 6 characters }
                 </div>
               }
             </div>
@@ -54,7 +54,7 @@
             <div class="mb-3">
               <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
               <input type="date" class="form-control" formControlName="dateOfBirth">
-              @if(submitted && f['dateOfBirth'].errors?.['required']) {
+              @if(submitted && formControls['dateOfBirth'].errors?.['required']) {
                 <div class="text-danger small">Date of birth is required</div>
               }
             </div>
@@ -63,7 +63,7 @@
             <div class="mb-3">
               <label class="form-label">Phone Number <span class="text-danger">*</span></label>
               <input type="text" class="form-control" formControlName="phone" placeholder="Enter phone number">
-              @if(submitted && f['phone'].errors?.['required']) {
+              @if(submitted && formControls['phone'].errors?.['required']) {
                 <div class="text-danger small">Phone number is required</div>
               }
             </div>
@@ -72,6 +72,9 @@
             <div class="mb-3">
               <label class="form-label">Address</label>
               <textarea class="form-control" formControlName="address" rows="2" placeholder="Enter your address"></textarea>
+              @if(submitted && formControls['address'].errors) {
+                <div class="text-danger small">Address is required</div>
+              }
             </div>
 
             <!-- Profile Photo -->

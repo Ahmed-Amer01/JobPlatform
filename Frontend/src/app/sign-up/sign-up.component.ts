@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,7 +15,7 @@ export class SignUpComponent {
   selectedPhoto?: File;
   selectedResume?: File;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router:Router, private authService: AuthService) {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -22,26 +23,33 @@ export class SignUpComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       dateOfBirth: ['', Validators.required],
       phone: ['', Validators.required],
-      address: ['']
+      address: ['', Validators.required]
     });
   }
 
-  get f() { return this.signupForm.controls; }
-
-  onFileChange(event: any, type: string) {
-    if (type === 'photo') this.selectedPhoto = event.target.files[0];
-    if (type === 'resume') this.selectedResume = event.target.files[0];
+  get formControls() { 
+    return this.signupForm.controls; 
   }
 
-  onSubmit() {
+  onFileChange(event: any, type: string) {
+    if (type === 'photo') 
+      this.selectedPhoto = event.target.files[0];
+    if (type === 'resume') 
+      this.selectedResume = event.target.files[0];
+  }
+
+  signUp() {
     this.submitted = true;
     if (this.signupForm.invalid) return;
 
     this.authService.register(this.signupForm.value, this.selectedPhoto, this.selectedResume)
       .subscribe({
         next: (res) => {
-          console.log('Registered successfully:', res);
-          alert('Registration successful!');
+          // Save token and user in localStorage using AuthService
+          this.authService.saveUserData(res.data.token, res.data.user);
+
+          alert('Registration successful! You are now logged in.');
+          this.router.navigate(['/']); // Redirect to home
         },
         error: (err) => {
           console.error(err);

@@ -1,0 +1,16 @@
+<div class="container text-center mt-5">
+  <!-- If Logged In -->
+  @if(isLoggedIn) {
+    <h1>Welcome to Job Platform, {{ user?.firstName }} {{ user?.lastName }}</h1>
+    <p class="lead">Explore new opportunities and manage your account.</p>
+  }
+
+  @if(!isLoggedIn) {
+    <h1>Welcome to Job Platform</h1>
+    <p class="lead">Find your dream job or post job listings easily!</p>
+    <div class="mt-4">
+      <a class="btn btn-primary btn-lg me-3" routerLink="/sign-up">Sign Up</a>
+      <a class="btn btn-outline-primary btn-lg" routerLink="/login">Login</a>
+    </div>
+  }
+</div>

@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold" routerLink="/">Job<span class="text-warning">Platform</span></a>
+
+    <!-- Menu Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
+
+        <!--Guest Links -->
+        @if (!isLoggedIn) {
+          @for (link of guestLinks; track link.label) {
+            <li class="nav-item">
+              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
+            </li>
+          }
+        }
+
+        <!--User Links -->
+        @if (isLoggedIn && role === 'user') {
+          @for (link of userLinks; track link.label) {
+            <li class="nav-item">
+              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
+            </li>
+          }
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" href="" (click)="logout()">Logout</a>
+          </li>
+        }
+
+        <!--Admin Links -->
+        @if (isLoggedIn && role === 'admin') {
+          @for (link of adminLinks; track link.label) {
+            <li class="nav-item">
+              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
+            </li>
+          }
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" href="" (click)="logout()">Logout</a>
+          </li>
+        }
+
+      </ul>
+    </div>
+  </div>
+</nav>

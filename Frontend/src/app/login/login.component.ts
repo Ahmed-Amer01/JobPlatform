@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   submitted = false;
-  loading = false;
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
@@ -22,28 +21,26 @@ export class LoginComponent {
     });
   }
 
-  get f() {
+  get formControls() {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
+  login() {
     this.submitted = true;
     this.errorMessage = '';
 
-    if (this.loginForm.invalid) return;
-
-    this.loading = true;
+    if (this.loginForm.invalid) 
+      return;
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
-        alert('Login successful!');
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        this.router.navigate(['/dashboard']); // Change to your main page
+        // Save token and user in localStorage
+        this.authService.saveUserData(res.data.token, res.data.user);
+
+        this.router.navigate(['/']); // Redirect to home
       },
       error: (err) => {
         this.errorMessage = err.error.message || 'Login failed. Please try again.';
-        this.loading = false;
       }
     });
   }
