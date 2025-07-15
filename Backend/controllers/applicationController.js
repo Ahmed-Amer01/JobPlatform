@@ -1,5 +1,6 @@
 const Application = require('../models/applicationModel');
 const Job = require('../models/jobModel');
+const { createNotification } = require('../services/notificationService');
 
 const VALID_STATUSES = ['applied', 'under_review', 'interviewed', 'hired', 'rejected'];
 
@@ -44,6 +45,16 @@ const applyForJob = async (req, res) => {
         const savedApp = await application.save();
         job.applications.push(savedApp._id);
         await job.save();
+
+        // notify job owner with new application
+        await createNotification({
+            userId: job.postedBy,
+            senderId: req.user._id,
+            type: 'new_application',
+            message: `A new candidate applied for your job: ${job.title}`,
+            jobId: job._id,
+            applicationId: savedApp._id
+        });
 
         res.status(201).json({ status: 'success', data: savedApp });
     } catch (err) {
@@ -117,6 +128,18 @@ const updateApplication = async (req, res) => {
         if (coverLetterFile) app.coverLetter = `/uploads/coverLetters/${coverLetterFile.filename}`;
 
         await app.save();
+
+        // notify job owner with update on application
+        const job = await Job.findById(app.jobId);
+        await createNotification({
+            userId: job.postedBy,
+            senderId: req.user._id,
+            type: 'application_update',
+            message: `A candidate updated their application for "${job.title}"`,
+            jobId: job._id,
+            applicationId: app._id
+        });
+
         res.status(200).json({ status: 'success', data: app });
     } catch (err) {
         res.status(500).json({ status: 'error', message: err.message });
@@ -141,12 +164,21 @@ const updateApplicationStatus = async (req, res) => {
             return res.status(403).json({ status: 'fail', message: 'Unauthorized to update status' });
         }
 
-        if (!VALID_STATUSES.includes(req.body.status)) {
+        const status = req.body.status.toLowerCase();
+        if (!VALID_STATUSES.includes(status)) {
             return res.status(400).json({ status: 'fail', message: 'Invalid application status' });
         }
-
-        app.status = req.body.status;
+        app.status = status;
         await app.save();
+
+        await createNotification({
+            userId: app.candidateId,
+            senderId: req.user._id,
+            type: 'application_status',
+            message: `Your application for "${job.title}" is now ${app.status}.`,
+            jobId: job._id,
+            applicationId: app._id
+        });
 
         res.status(200).json({ status: 'success', data: app });
     } catch (err) {
@@ -170,6 +202,15 @@ const deleteApplication = async (req, res) => {
     }
 
         await app.deleteOne();
+
+        // notify job owner that user withdraw the application
+        await createNotification({
+            userId: job.postedBy,
+            senderId: req.user._id,
+            type: 'application_deleted',
+            message: `A candidate withdrew their application for "${job.title}"`,
+            jobId: job._id
+        });
 
         res.status(204).json({ status: 'success', data: null });
     } catch (err) {

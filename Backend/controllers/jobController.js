@@ -1,6 +1,6 @@
 const Job = require('../models/jobModel');
 const Application = require('../models/applicationModel');
-const mongoose = require('mongoose');
+const { createNotification } = require('../services/notificationService');
 
 // Enum for Employment Types
 const EMPLOYMENT_TYPES = ['full-time', 'part-time', 'internship'];
@@ -196,6 +196,18 @@ const updateJob = async (req, res) => {
 
         await job.save();
 
+        // notify all users who applied for that job
+        const applications = await Application.find({ jobId: job._id });
+        await Promise.all(applications.map(app => 
+            createNotification({
+                userId: app.candidateId,
+                senderId: req.user._id,
+                type: 'job_update',
+                message: `The job "${job.title}" you applied for has been updated.`,
+                jobId: job._id
+            })
+        ));
+
         res.status(200).json({ status: 'success', data: job });
 
     } catch (err) {
@@ -225,8 +237,19 @@ const deleteJob = async (req, res) => {
             });
         }
 
+        const applications = await Application.find({ jobId: job._id });
         await Job.findByIdAndDelete(req.params.id);
         await Application.deleteMany({ jobId: job._id });
+
+        await Promise.all(applications.map(app => 
+            createNotification({
+                userId: app.candidateId,
+                senderId: req.user._id,
+                type: 'job_deleted',
+                message: `The job "${job.title}" you applied for has been removed.`,
+                jobId: job._id
+            })
+        ));
 
         res.status(204).json({ status: 'success', data: null });
     } catch (err) {
