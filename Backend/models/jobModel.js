@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        default: 'online',
+        default: 'remote',
         maxlength: [100, 'Location cannot exceed 100 characters'],
         trim: true
     },

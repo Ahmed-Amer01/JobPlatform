@@ -5,6 +5,72 @@ const mongoose = require('mongoose');
 // Enum for Employment Types
 const EMPLOYMENT_TYPES = ['full-time', 'part-time', 'internship'];
 
+// Get jobs posted by the logged-in employer
+const getMyJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
+        res.status(200).json({
+            status: 'success',
+            count: jobs.length,
+            data: jobs
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: err.message
+        });
+    }
+};
+
+// Search jobs by title, company, or location (partial & combined search)
+const searchJobs = async (req, res) => {
+    try {
+        let { title, company, location } = req.query;
+
+        title = title ? title.trim() : '';
+        company = company ? company.trim() : '';
+        location = location ? location.trim() : '';
+
+        if (!title && !company && !location) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Please provide at least one search parameter (title, company, or location)'
+            });
+        }
+
+        const filter = {};
+        const conditions = [];
+
+        if (title) {
+            conditions.push({ title: { $regex: title, $options: 'i' } });
+        }
+        if (company) {
+            conditions.push({ company: { $regex: company, $options: 'i' } });
+        }
+        if (location) {
+            conditions.push({ location: { $regex: location, $options: 'i' } });
+        }
+
+        if (conditions.length > 0) {
+            filter.$and = conditions; // All conditions must match
+        }
+
+        const jobs = await Job.find(filter).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            status: 'success',
+            count: jobs.length,
+            data: jobs
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: err.message
+        });
+    }
+};
+
 // Get all jobs (with pagination & search)
 const getAllJobs = async (req, res) => {
     try {
@@ -69,7 +135,7 @@ const createJob = async (req, res) => {
             title: title.trim(),
             description: description.trim(),
             company: company.trim(),
-            location: location?.trim() || 'online',
+            location: location?.trim() || 'remote',
             employmentType,
             requirements: requirements.trim(),
             skills: Array.isArray(skills) ? skills : (skills ? [skills] : []),
@@ -96,44 +162,46 @@ const updateJob = async (req, res) => {
         const job = await Job.findById(req.params.id);
 
         if (!job) {
-            return res.status(404).json({ 
-                status: 'fail', 
-                message: 'Job not found' 
+            return res.status(404).json({
+                status: 'fail',
+                message: 'Job not found'
             });
         }
 
         if (job.postedBy.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            return res.status(403).json({ 
-                status: 'fail', 
-                message: 'Not authorized to update this job' 
+            return res.status(403).json({
+                status: 'fail',
+                message: 'Not authorized to update this job'
             });
         }
 
         const { employmentType } = req.body;
         if (employmentType && !EMPLOYMENT_TYPES.includes(employmentType.toLowerCase())) {
-            return res.status(400).json({ 
-                status: 'fail', 
-                message: 'Invalid employment type' 
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Invalid employment type'
             });
         }
 
         const updatableFields = ['title', 'description', 'company', 'location', 'employmentType', 'requirements', 'skills', 'isActive'];
-        updatableFields.forEach(field => {
-            if (field === 'skills' && req.body.skills !== undefined) {
-                job.skills = Array.isArray(req.body.skills) ? req.body.skills : (req.body.skills ? [req.body.skills] : []);
-            } else if (req.body[field] !== undefined && req.body[field].toString().trim() !== '') {
-                job[field] = req.body[field];
-            }
-        });
+            updatableFields.forEach(field => {
+                if (field === 'skills' && req.body.skills !== undefined) {
+                    job.skills = Array.isArray(req.body.skills)
+                        ? req.body.skills
+                        : (req.body.skills ? [req.body.skills] : []);
+                } else if (req.body[field] !== undefined && req.body[field].toString().trim() !== '') {
+                    job[field] = req.body[field];
+                }
+            });
 
         await job.save();
 
         res.status(200).json({ status: 'success', data: job });
 
     } catch (err) {
-        res.status(500).json({ 
-            status: 'error', 
-            message: err.message 
+        res.status(500).json({
+            status: 'error',
+            message: err.message
         });
     }
 };
@@ -217,5 +285,7 @@ module.exports = {
     createJob,
     updateJob,
     deleteJob,
-    getJobApplications
+    getJobApplications,
+    getMyJobs,
+    searchJobs
 };

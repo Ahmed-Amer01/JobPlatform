@@ -5,11 +5,15 @@ const jobController = require('../controllers/jobController');
 
 const router = express.Router();
 
-router.get('/', jobController.getAllJobs);
+router.get('/my-jobs', verifyToken, allowedTo('user', 'admin'), jobController.getMyJobs);
+
+router.get('/search', jobController.searchJobs);
 
 router.get('/:id/applications', verifyToken, jobController.getJobApplications);
 
 router.get('/:id', jobController.getJobById);
+
+router.get('/', jobController.getAllJobs);
 
 router.use(verifyToken, allowedTo('admin', 'user'));
 
