@@ -28,14 +28,13 @@ const applicationSchema = new mongoose.Schema({
             validator: function(v) {
             return /\.(pdf|docx?|txt)$/i.test(v) || validator.isURL(v);
             },
-            message: 'Please provide a valid resume file or URL' // Validate for resume file types on file name or URL
+            message: 'Please provide a valid cover letter file or URL' // Validate for cover letter file types on file name or URL
         }
     },
     status: {
         type: String,
         enum: ['applied', 'under_review', 'interviewed', 'hired', 'rejected'],
-        default: 'applied',
-        required: true
+        default: 'applied'
     }
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields
