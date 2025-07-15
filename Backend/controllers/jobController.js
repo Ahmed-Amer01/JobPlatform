@@ -61,7 +61,7 @@ const createJob = async (req, res) => {
         }
 
         // Enum check for employmentType
-        if (!EMPLOYMENT_TYPES.includes(employmentType)) {
+        if (!EMPLOYMENT_TYPES.includes(employmentType.toLowerCase())) {
             return res.status(400).json({ status: 'fail', message: 'Invalid employment type' });
         }
 
@@ -110,7 +110,7 @@ const updateJob = async (req, res) => {
         }
 
         const { employmentType } = req.body;
-        if (employmentType && !EMPLOYMENT_TYPES.includes(employmentType)) {
+        if (employmentType && !EMPLOYMENT_TYPES.includes(employmentType.toLowerCase())) {
             return res.status(400).json({ 
                 status: 'fail', 
                 message: 'Invalid employment type' 
@@ -119,7 +119,9 @@ const updateJob = async (req, res) => {
 
         const updatableFields = ['title', 'description', 'company', 'location', 'employmentType', 'requirements', 'skills', 'isActive'];
         updatableFields.forEach(field => {
-            if (req.body[field] !== undefined && req.body[field].toString().trim() !== '') {
+            if (field === 'skills' && req.body.skills !== undefined) {
+                job.skills = Array.isArray(req.body.skills) ? req.body.skills : (req.body.skills ? [req.body.skills] : []);
+            } else if (req.body[field] !== undefined && req.body[field].toString().trim() !== '') {
                 job[field] = req.body[field];
             }
         });
