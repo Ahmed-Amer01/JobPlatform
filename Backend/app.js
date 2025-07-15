@@ -6,10 +6,19 @@ const userRoutes = require('./routes/userRoute');
 const jobRoutes = require('./routes/jobRoute');
 const applicationRoutes = require('./routes/applicationRoute');
 const notificationRoutes = require('./routes/notificationRoute');
+const http = require('node:http');
+const {Server} = require('socket.io');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
+app.use(cors());
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors :'*'
+});
+
 app.use(express.json());
 
 app.use('/uploads', express.static('uploads'));
@@ -34,6 +43,6 @@ app.use((err, req, res, next) => {
 connectDB();
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('Server is running on port', PORT);
 });
