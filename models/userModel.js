@@ -79,9 +79,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'employer', 'candidate'],
-        default: 'candidate',
-        required: true 
+        enum: ['admin', 'user'],
+        default: 'user'
     }
 }, {
     timestamps: true // Automatically manage createdAt and updatedAt fields

@@ -7,11 +7,11 @@ const router = express.Router();
 
 router.get('/', jobController.getAllJobs);
 
-router.get('/:id/applications', verifyToken, allowedTo('admin', 'employer'), jobController.getJobApplications);
+router.get('/:id/applications', verifyToken, jobController.getJobApplications);
 
 router.get('/:id', jobController.getJobById);
 
-router.use(verifyToken, allowedTo('admin', 'employer'));
+router.use(verifyToken, allowedTo('admin', 'user'));
 
 router.post('/', jobController.createJob);
 router.patch('/:id', jobController.updateJob);

@@ -1,6 +1,8 @@
 const Application = require('../models/applicationModel');
 const Job = require('../models/jobModel');
 
+const VALID_STATUSES = ['applied', 'under_review', 'interviewed', 'hired', 'rejected'];
+
 // Create a new application
 const applyForJob = async (req, res) => {
   try {
@@ -8,7 +10,7 @@ const applyForJob = async (req, res) => {
     const candidateId = req.user._id;
 
     const job = await Job.findById(jobId);
-    if (!job) {
+    if (!job || !job.postedBy) {
       return res.status(404).json({ status: 'fail', message: 'Job not found' });
     }
 
@@ -16,6 +18,9 @@ const applyForJob = async (req, res) => {
       return res.status(400).json({ status: 'fail', message: 'This job is no longer active' });
     }
 
+    if (job.postedBy.toString() === candidateId.toString()) {
+      return res.status(400).json({ status: 'fail', message: 'You cannot apply to your own job' });
+    }
 
     const existingApp = await Application.findOne({ jobId, candidateId });
     if (existingApp) {
@@ -33,7 +38,7 @@ const applyForJob = async (req, res) => {
       jobId,
       candidateId,
       resume: resumeFile.path,
-      coverLetter: coverLetterFile ? coverLetterFile.path : undefined
+      coverLetter: coverLetterFile ? coverLetterFile.path : undefined,
     });
 
     const savedApp = await application.save();
@@ -42,14 +47,15 @@ const applyForJob = async (req, res) => {
 
     res.status(201).json({ status: 'success', data: savedApp });
   } catch (err) {
-    res.status(400).json({ status: 'error', message: err.message });
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
 // Get applications by the logged-in candidate
 const getMyApplications = async (req, res) => {
   try {
-    const apps = await Application.find({ candidateId: req.user._id }).populate('jobId');
+    const apps = await Application.find({ candidateId: req.user._id })
+      .populate('jobId', 'title company location');
     res.status(200).json({ status: 'success', data: apps });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
@@ -63,7 +69,8 @@ const getByCandidate = async (req, res) => {
       return res.status(403).json({ status: 'fail', message: 'Unauthorized' });
     }
 
-    const apps = await Application.find({ candidateId: req.params.candidateId }).populate('jobId');
+    const apps = await Application.find({ candidateId: req.params.candidateId })
+      .populate('jobId', 'title company location');
     res.status(200).json({ status: 'success', data: apps });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
@@ -74,7 +81,7 @@ const getByCandidate = async (req, res) => {
 const getByJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.jobId);
-    if (!job) {
+    if (!job || !job.postedBy) {
       return res.status(404).json({ status: 'fail', message: 'Job not found' });
     }
 
@@ -85,7 +92,8 @@ const getByJob = async (req, res) => {
       return res.status(403).json({ status: 'fail', message: 'Not authorized to view applications for this job' });
     }
 
-    const apps = await Application.find({ jobId: job._id }).populate('candidateId');
+    const apps = await Application.find({ jobId: job._id })
+      .populate('candidateId', 'firstName lastName email');
     res.status(200).json({ status: 'success', data: apps });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
@@ -111,7 +119,7 @@ const updateApplication = async (req, res) => {
     await app.save();
     res.status(200).json({ status: 'success', data: app });
   } catch (err) {
-    res.status(400).json({ status: 'error', message: err.message });
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
@@ -122,24 +130,27 @@ const updateApplicationStatus = async (req, res) => {
     if (!app) return res.status(404).json({ status: 'fail', message: 'Application not found' });
 
     const job = await Job.findById(app.jobId);
-    const isOwner = job?.postedBy.toString() === req.user._id.toString();
+    if (!job || !job.postedBy) {
+      return res.status(404).json({ status: 'fail', message: 'Associated job not found' });
+    }
+
+    const isOwner = job.postedBy.toString() === req.user._id.toString();
     const isAdmin = req.user.role === 'admin';
 
     if (!isOwner && !isAdmin) {
       return res.status(403).json({ status: 'fail', message: 'Unauthorized to update status' });
     }
 
-    const validStatuses = ['applied', 'under_review', 'interviewed', 'hired', 'rejected'];
-    if (!validStatuses.includes(req.body.status)) {
+    if (!VALID_STATUSES.includes(req.body.status)) {
       return res.status(400).json({ status: 'fail', message: 'Invalid application status' });
     }
-    
+
     app.status = req.body.status;
     await app.save();
 
     res.status(200).json({ status: 'success', data: app });
   } catch (err) {
-    res.status(400).json({ status: 'error', message: err.message });
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
@@ -151,6 +162,11 @@ const deleteApplication = async (req, res) => {
 
     if (req.user.role !== 'admin' && app.candidateId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ status: 'fail', message: 'Unauthorized' });
+    }
+
+    const job = await Job.findById(app.jobId);
+    if (job) {
+      await Job.findByIdAndUpdate(app.jobId, { $pull: { applications: app._id } });
     }
 
     await app.deleteOne();

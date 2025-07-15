@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
 const jobSchema = new mongoose.Schema({
     title: {
@@ -21,7 +20,7 @@ const jobSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        required: [true, 'Please provide the job location'],
+        default: 'online',
         maxlength: [100, 'Location cannot exceed 100 characters'],
         trim: true
     },
@@ -35,10 +34,15 @@ const jobSchema = new mongoose.Schema({
         required: [true, 'Please provide the job requirements'],
         maxlength: [10000, 'Requirements cannot exceed 10000 characters']
     },
-    skills: [{
-        type: String,
-        maxlength: [50, 'Skill cannot exceed 50 characters']
-    }],
+    skills: {
+        type: [String],
+        validate: {
+            validator: function (v) {
+                return v.every(skill => typeof skill === 'string' && skill.trim() !== '');
+            },
+            message: 'All skills must be non-empty strings'
+        }
+    },
     views: {
         type: Number,
         default: 0,
@@ -60,6 +64,9 @@ const jobSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// Text index for search
+jobSchema.index({ title: 'text', company: 'text', location: 'text' });
 
 const jobModel = mongoose.model('Job', jobSchema);
 module.exports = jobModel;

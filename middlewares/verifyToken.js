@@ -25,7 +25,11 @@ const verifyToken = async (req, res, next) => {
         }
         req.user = user;
         next();
-    } catch (error) {
+    } catch (error) { 
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ status: 'fail', message: 'Token expired, please login again' });
+        }
+
         console.error('Token verification error:', error);
         return res.status(401).json({ message: 'Unauthorized access' });
     }

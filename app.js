@@ -20,6 +20,15 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/application', applicationRoutes);
 
 
+// upload error handler
+app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError || err.message.includes('Invalid') || err.message.includes('allowed')) {
+        return res.status(400).json({ status: 'fail', message: err.message });
+    }
+    next(err);
+});
+
+
 connectDB();
 
 const PORT = process.env.PORT || 3000;

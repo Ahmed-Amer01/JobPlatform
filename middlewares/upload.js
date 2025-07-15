@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
         ) {
             cb(null, 'uploads/resumes');
         } else {
-            cb(new Error('Invalid file type!'), null);
+            // cb(new Error('Invalid file type!'), null);
+            return cb(new Error('Invalid file type!')); // No second argument
         }
     },
     filename: (req, file, cb) => {
@@ -27,10 +28,10 @@ const fileFilter = (req, file, cb) => {
     // get the file extension from the original name last element of the split array
     let ext = file.originalname.split('.').pop().toLowerCase();
     if (file.fieldname === 'photo' && !['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-        return cb(new Error('Invalid image format'), false);
+        return cb(new Error('Only image formats (jpg, jpeg, png, gif) are allowed'), false);
     }
     if (file.fieldname === 'resume' && !['pdf', 'doc', 'docx', 'txt'].includes(ext)) {
-        return cb(new Error('Invalid resume format'), false);
+        return cb(new Error('Only resume formats (pdf, doc, docx, txt) are allowed'), false);
     }
     cb(null, true);
 };

@@ -10,16 +10,12 @@ const generateToken = (user) => {
 
 const register = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, dateOfBirth, phone, address, role } = req.body;
+        const { firstName, lastName, email, password, dateOfBirth, phone, address} = req.body;
         if (!firstName || !lastName || !email || !password || !dateOfBirth || !phone ) {
             return res.status(400).json({
                 status: 'fail',
                 message: 'All fields are required'
             });
-        }
-
-        if (!['candidate', 'employer'].includes(role)) {
-            return res.status(400).json({ message: 'Invalid role selected' });
         }
 
         const existingUser = await User.findOne({ email });
@@ -39,13 +35,19 @@ const register = async (req, res) => {
             dateOfBirth,
             phone,
             address,
-            role,
-            photo: req.files?.photo ? req.files.photo[0].path : '/uploads/photos/defaultUserPhoto.jpg',
-            resume: req.files?.resume ? req.files.resume[0].path : undefined
+            role: 'user',
+            photo: (req.files && req.files.photo && req.files.photo.length > 0 && req.files.photo[0].path)
+                    ? req.files.photo[0].path
+                    : '/uploads/photos/defaultUserPhoto.jpg',
+                    
+            resume: (req.files && req.files.resume && req.files.resume.length > 0 && req.files.resume[0].path)
+                    ? req.files.resume[0].path
+                    : undefined
         });
         await newUser.save();
 
         const token = generateToken(newUser);
+        newUser.password = undefined;
 
         res.status(201).json({
             status: 'success',
@@ -91,6 +93,7 @@ const login = async (req, res) => {
         }
 
         const token = generateToken(user);
+        user.password = undefined;
 
         res.status(200).json({
             status: 'success',

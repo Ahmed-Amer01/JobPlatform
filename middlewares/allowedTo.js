@@ -9,7 +9,7 @@ const allowedTo = (...roles) => {
             let role = req.user.role;
 
             if (!roles.includes(role)) {
-                return res.status(403).json({ message: 'Forbidden: You do not have permission to perform this action' });
+                return res.status(403).json({ status: 'fail', message: 'Forbidden: You do not have permission to perform this action' });
             }
             next();
         };

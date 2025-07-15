@@ -2,7 +2,10 @@ const Job = require('../models/jobModel');
 const Application = require('../models/applicationModel');
 const mongoose = require('mongoose');
 
-// Get all jobs (public)
+// Enum for Employment Types
+const EMPLOYMENT_TYPES = ['full-time', 'part-time', 'internship'];
+
+// Get all jobs (with pagination & search)
 const getAllJobs = async (req, res) => {
     try {
         const jobs = await Job.find().populate('postedBy', 'firstName lastName email');
@@ -10,7 +13,7 @@ const getAllJobs = async (req, res) => {
             status: 'success',
             data: jobs
         });
-        
+
     } catch (err) {
         res.status(500).json({ 
             status: 'error', 
@@ -19,7 +22,7 @@ const getAllJobs = async (req, res) => {
     }
 };
 
-// Get job by ID (public + increment views)
+// Get job by ID (increment views)
 const getJobById = async (req, res) => {
     try {
         const job = await Job.findById(req.params.id).populate('postedBy', 'firstName lastName email');
@@ -47,19 +50,29 @@ const getJobById = async (req, res) => {
     }
 };
 
-// Create a job (admin or employer)
+// Create a job
 const createJob = async (req, res) => {
     try {
         const { title, description, company, location, employmentType, requirements, skills } = req.body;
 
+        // Basic validation
+        if (!title || !description || !company || !employmentType || !requirements) {
+            return res.status(400).json({ status: 'fail', message: 'Required fields missing' });
+        }
+
+        // Enum check for employmentType
+        if (!EMPLOYMENT_TYPES.includes(employmentType)) {
+            return res.status(400).json({ status: 'fail', message: 'Invalid employment type' });
+        }
+
         const newJob = new Job({
-            title,
-            description,
-            company,
-            location,
+            title: title.trim(),
+            description: description.trim(),
+            company: company.trim(),
+            location: location?.trim() || 'online',
             employmentType,
-            requirements,
-            skills: Array.isArray(skills) ? skills : [skills],
+            requirements: requirements.trim(),
+            skills: Array.isArray(skills) ? skills : (skills ? [skills] : []),
             postedBy: req.user._id
         });
 
@@ -96,14 +109,25 @@ const updateJob = async (req, res) => {
             });
         }
 
+        const { employmentType } = req.body;
+        if (employmentType && !EMPLOYMENT_TYPES.includes(employmentType)) {
+            return res.status(400).json({ 
+                status: 'fail', 
+                message: 'Invalid employment type' 
+            });
+        }
+
         const updatableFields = ['title', 'description', 'company', 'location', 'employmentType', 'requirements', 'skills', 'isActive'];
         updatableFields.forEach(field => {
-            if (req.body[field] !== undefined) job[field] = req.body[field];
+            if (req.body[field] !== undefined && req.body[field].toString().trim() !== '') {
+                job[field] = req.body[field];
+            }
         });
 
         await job.save();
 
         res.status(200).json({ status: 'success', data: job });
+
     } catch (err) {
         res.status(500).json({ 
             status: 'error', 
@@ -176,6 +200,7 @@ const getJobApplications = async (req, res) => {
                 applications: job.applications
             }
         });
+
     } catch (err) {
         res.status(500).json({
             status: 'error',

@@ -10,11 +10,9 @@ router.use(verifyToken, allowedTo('admin'));
 
 router.get('/', adminController.getAllUsers);
 router.get('/admins', adminController.getAllAdmins);
-router.get('/candidates', adminController.getAllCandidates);
-router.get('/employers', adminController.getAllEmployers);
 router.get('/:id', adminController.getUserById);
 router.post('/', upload, adminController.createAdmin);
-router.patch('/:id', upload, adminController.updateAdmin);
-router.delete('/:id', adminController.deleteAdmin);
+router.patch('/:id', upload, adminController.updateAdminOrUser);
+router.delete('/:id', adminController.deleteAdminOrUser);
 
 module.exports = router;

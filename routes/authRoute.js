@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/register', upload, authController.register);
 router.post('/login', authController.login);
-router.post('/logout', verifyToken,allowedTo('admin', 'candidate', 'employer'), authController.logout);
+router.post('/logout', verifyToken,allowedTo('admin', 'user'), authController.logout);
 
 module.exports = router;

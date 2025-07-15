@@ -19,41 +19,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// Get all candidates and employers
-const getAllCandidates = async (req, res) => {
-    try {
-        const candidates = await Admin.find({ role: 'candidate' });
-        res.status(200).json({
-            status: 'success',
-            data: {
-                candidates
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
-};
-
-const getAllEmployers = async (req, res) => {
-    try {
-        const employers = await Admin.find({ role: 'employer' });
-        res.status(200).json({
-            status: 'success',
-            data: {
-                employers
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
-};
-
 // Get all admins
 const getAllAdmins = async (req, res) => {
     try {
@@ -124,8 +89,13 @@ const createAdmin = async (req, res) => {
             phone,
             address,
             role: 'admin',
-            photo: req.files?.photo ? req.files.photo[0].path : '/uploads/photos/defaultUserPhoto.jpg',
-            resume: req.files?.resume ? req.files.resume[0].path : undefined
+            photo: (req.files && req.files.photo && req.files.photo.length > 0 && req.files.photo[0].path)
+                    ? req.files.photo[0].path
+                    : '/uploads/photos/defaultUserPhoto.jpg',
+
+            resume: (req.files && req.files.resume && req.files.resume.length > 0 && req.files.resume[0].path)
+                    ? req.files.resume[0].path
+                    : undefined
         });
         await newAdmin.save();
 
@@ -144,13 +114,13 @@ const createAdmin = async (req, res) => {
 };
 
 // Update an admin
-const updateAdmin = async (req, res) => {
+const updateAdminOrUser = async (req, res) => {
     try {
         const user = await Admin.findById(req.params.id);
-        if (!user || user.role !== 'admin') {
+        if (!user) {
             return res.status(404).json({
                 status: 'fail',
-                message: 'Admin not found'
+                message: 'User not found'
             });
         }
 
@@ -165,10 +135,10 @@ const updateAdmin = async (req, res) => {
             user.password = await bcrypt.hash(req.body.password, 10);
         }
 
-        if (req.files?.photo) {
+        if (req.files && req.files.photo && req.files.photo.length > 0 && req.files.photo[0].path) {
             user.photo = req.files.photo[0].path;
         }
-        if (req.files?.resume) {
+        if (req.files && req.files.resume && req.files.resume.length > 0 && req.files.resume[0].path) {
             user.resume = req.files.resume[0].path;
         }
 
@@ -176,7 +146,7 @@ const updateAdmin = async (req, res) => {
         res.status(200).json({
             status: 'success',
             data: {
-                admin: user
+                user: user
             }
         });
     } catch (error) {
@@ -188,10 +158,10 @@ const updateAdmin = async (req, res) => {
 };
 
 // Delete an admin
-const deleteAdmin = async (req, res) => {
+const deleteAdminOrUser = async (req, res) => {
     try {
         const user = await Admin.findByIdAndDelete(req.params.id);
-        if (!user || user.role !== 'admin') {
+        if (!user) {
             return res.status(404).json({
                 status: 'fail',
                 message: 'User not found'
@@ -212,11 +182,9 @@ const deleteAdmin = async (req, res) => {
 
 module.exports = {
     getAllUsers,
-    getAllCandidates,
-    getAllEmployers,
     getAllAdmins,
     getUserById,
     createAdmin,
-    updateAdmin,
-    deleteAdmin
+    updateAdminOrUser,
+    deleteAdminOrUser
 };

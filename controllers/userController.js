@@ -46,10 +46,10 @@ const updateUser = async (req, res) => {
             user.password = await bcrypt.hash(req.body.password, 10);
         }
 
-        if (req.files?.photo) {
+        if (req.files && req.files.photo && req.files.photo.length > 0 && req.files.photo[0].path) {
             user.photo = req.files.photo[0].path;
         }
-        if (req.files?.resume) {
+        if (req.files && req.files.resume && req.files.resume.length > 0 && req.files.resume[0].path) {
             user.resume = req.files.resume[0].path;
         }
         await user.save();
