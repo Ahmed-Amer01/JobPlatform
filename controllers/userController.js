@@ -2,6 +2,40 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 
 // get current user
+
+// Get user by ID (admin or self)
+const getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Only allow if user is admin or user themselves
+        if (req.user.role !== 'admin' && req.user._id.toString() !== id) {
+            return res.status(403).json({ 
+                status: 'fail',
+                message: 'Forbidden: You can only view your own data'
+            });
+        }
+
+        const user = await User.findById(id).select('-password');
+        if (!user) {
+            return res.status(404).json({ 
+                status: 'fail',
+                message: 'User not found' 
+            });
+        }
+
+        res.status(200).json({ 
+            status: 'success',
+            data: { user } 
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            status: 'error',
+            message: error.message 
+        });
+    }
+};
+
 const getCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id || req.user._id).select('-password'); // Exclude password from the response
@@ -91,6 +125,7 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
+    getUserById,
     getCurrentUser,
     updateUser,
     deleteUser

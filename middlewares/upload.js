@@ -38,7 +38,8 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter })
                 .fields([
                         { name: 'photo', maxCount: 1 },
-                        { name: 'resume', maxCount: 1 }
+                        { name: 'resume', maxCount: 1 },
+                        { name: 'coverLetter', maxCount: 1 } 
                 ]);
 
 module.exports = upload;

@@ -4,7 +4,7 @@ const Job = require('../models/jobModel');
 // Create a new application
 const applyForJob = async (req, res) => {
   try {
-    const { jobId } = req.body;
+    const { jobId } = req.body || '64e123abc456def789012345';
     const candidateId = req.user._id;
 
     const job = await Job.findById(jobId);

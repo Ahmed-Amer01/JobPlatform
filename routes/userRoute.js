@@ -7,6 +7,7 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 router.use(verifyToken , allowedTo('candidate', 'employer', 'admin'));
+router.get('/:id', userController.getUserById); // Add this line
 
 router.get('/profile', userController.getCurrentUser);
 router.patch('/profile', upload, userController.updateUser);
