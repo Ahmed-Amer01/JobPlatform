@@ -9,6 +9,7 @@ const notificationRoutes = require('./routes/notificationRoute');
 const http = require('node:http');
 const {Server} = require('socket.io');
 const cors = require('cors');
+const multer = require('multer');
 
 require('dotenv').config();
 

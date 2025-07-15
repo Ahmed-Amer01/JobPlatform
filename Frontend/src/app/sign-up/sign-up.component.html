@@ -1,0 +1,107 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h4 class="mb-0">Create an Account</h4>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
+
+            <!-- First Name -->
+            <div class="mb-3">
+              <label class="form-label">First Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="firstName" placeholder="Enter first name">
+              @if(submitted && f['firstName'].errors?.['required']) {
+                <div class="text-danger small">First name is required</div>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-3">
+              <label class="form-label">Last Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="lastName" placeholder="Enter last name">
+              @if(submitted && f['lastName'].errors?.['required']) {
+                <div class="text-danger small">Last name is required</div>
+              }
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" formControlName="email" placeholder="Enter email">
+              @if(submitted && f['email'].errors) {
+                <div class="text-danger small">
+                  @if(f['email'].errors['required']) { Email is required }
+                  @if(f['email'].errors['email']) { Enter a valid email }
+                </div>
+              }
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label">Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
+              @if(submitted && f['password'].errors) {
+                <div class="text-danger small">
+                  @if(f['password'].errors['required']) { Password is required }
+                  @if(f['password'].errors['minlength']) { Password must be at least 6 characters }
+                </div>
+              }
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="mb-3">
+              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="dateOfBirth">
+              @if(submitted && f['dateOfBirth'].errors?.['required']) {
+                <div class="text-danger small">Date of birth is required</div>
+              }
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="phone" placeholder="Enter phone number">
+              @if(submitted && f['phone'].errors?.['required']) {
+                <div class="text-danger small">Phone number is required</div>
+              }
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+              <label class="form-label">Address</label>
+              <textarea class="form-control" formControlName="address" rows="2" placeholder="Enter your address"></textarea>
+            </div>
+
+            <!-- Profile Photo -->
+            <div class="mb-3">
+              <label class="form-label">Profile Photo</label>
+              <input type="file" class="form-control" (change)="onFileChange($event, 'photo')" accept="image/*">
+            </div>
+
+            <!-- Resume -->
+            <div class="mb-3">
+              <label class="form-label">Resume</label>
+              <input type="file" class="form-control" (change)="onFileChange($event, 'resume')" accept=".pdf,.doc,.docx">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">
+                Sign Up
+              </button>
+            </div>
+
+            <!-- Redirect to login -->
+            <p class="text-center mt-3">
+              Already have an account?
+              <a routerLink="/login" class="text-primary text-decoration-none">Login</a>
+            </p>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
