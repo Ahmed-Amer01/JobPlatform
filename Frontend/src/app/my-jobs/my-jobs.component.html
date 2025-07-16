@@ -1,0 +1,21 @@
+<h2 class="my-jobs-title">My Jobs</h2>
+
+<section class="my-jobs-container">
+  @if (myJobs.length === 0) {
+    <p class="no-jobs-msg">You haven't posted any jobs yet.</p>
+  } @else {
+    @for (job of myJobs; track job._id) {
+        <div class="card">
+            <app-job-card
+                [job]="job"
+                [showActions]="true"
+                (update)="updateJob(job._id)"
+                (delete)="deleteJob(job._id)"
+                (view)="navigateToDetails(job._id)"
+                (viewApplications)="viewApplications(job._id)">
+            </app-job-card>
+
+        </div>
+    }
+  }
+</section>

@@ -9,6 +9,9 @@ import { AddJobComponent } from './add-job/add-job.component';
 import { ApplicationComponent } from './application/application.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { MyJobsComponent } from './my-jobs/my-jobs.component';
+import { UpdateJobComponent } from './update-job/update-job.component';
+import { JobApplicationsComponent } from './job-applications/job-applications.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -40,6 +43,16 @@ export const routes: Routes = [
         title: 'All Jobs'
     },
     { 
+        path: 'my-jobs', 
+        component: MyJobsComponent, 
+        title: 'My Jobs'
+    },
+    { 
+        path: 'my-job/:jobId/edit', 
+        component: AddJobComponent
+    },
+
+    { 
         path: 'jobs/:id', 
         component: JobDetailsComponent  , 
         title: 'About'
@@ -55,6 +68,13 @@ export const routes: Routes = [
     component: ApplicationComponent,
     title: 'Apply for Job'
     },
+
+    {
+        path: 'jobs/:id/applications',
+        component: JobApplicationsComponent,
+        title: 'Job Applications'
+    },
+
 
 {
     path:'**',

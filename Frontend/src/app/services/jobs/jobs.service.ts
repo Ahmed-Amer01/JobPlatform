@@ -7,6 +7,7 @@ import { Job } from '../../Interfaces/job/job';
   providedIn: 'root'
 })
 export class JobsService {
+
   private apiUrl = 'http://localhost:3000/api'; 
 
   constructor(private http: HttpClient) {}
@@ -33,11 +34,55 @@ export class JobsService {
   }
   
 
-getJobById(id: string): Observable<Job> {
-  return this.http
-    .get<{ status: string; data: Job }>(`${this.apiUrl}/jobs/${id}`)
-    .pipe(map(res => res.data));
+  getJobById(id: string): Observable<Job> {
+    return this.http
+      .get<{ status: string; data: Job }>(`${this.apiUrl}/jobs/${id}`)
+      .pipe(map(res => res.data));
+  }
+
+
+  getMyJobs(): Observable<Job[]> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+  return this.http.get<{ status: string; data: Job[] }>(`${this.apiUrl}/jobs/my-jobs`, { headers }).pipe(map(res => res.data));
+
 }
+
+
+
+  updateJob(id: string, jobData: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+  return this.http.patch(`${this.apiUrl}/jobs/${id}`, jobData, { headers });
+}
+
+
+  deleteJob(jobId: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.delete<{ status: string; message: string }>(
+      `${this.apiUrl}/jobs/${jobId}`,
+      { headers }
+    );
+  }
+
+  getJobApplications(jobId: string): Observable<{ title: string, applications: any[] }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http.get<{ status: string; data: { title: string, applications: any[] } }>(
+      `${this.apiUrl}/jobs/${jobId}/applications`, { headers }
+    ).pipe(map(res => res.data));
+  }
+
+
 
 
 
