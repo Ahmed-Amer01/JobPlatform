@@ -1,0 +1,73 @@
+.job-details {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.job-details h1 {
+  font-size: 28px;
+  color: #004c99;
+  margin-bottom: 10px;
+}
+
+.job-details h3 {
+  font-size: 20px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.job-details p {
+  margin: 6px 0;
+  color: #555;
+}
+
+.job-details section {
+  margin-top: 25px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.job-details h4 {
+  color: #004c99;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.skills {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background-color: #e6f0ff;
+  color: #004c99;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.apply-button {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 12px 24px;
+  background-color: #004c99;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.apply-button:hover {
+  background-color: #003366;
+}

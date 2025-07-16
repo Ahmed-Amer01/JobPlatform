@@ -7,6 +7,8 @@ import { JobCardComponent } from './job-card/job-card.component';
 import { JobListComponent } from './job-list/job-list.component';
 import { AddJobComponent } from './add-job/add-job.component';
 import { ApplicationComponent } from './application/application.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -29,36 +31,34 @@ export const routes: Routes = [
         component: LoginComponent,
         title:'Login'
     },
-    { path: 'jobs', component: JobListComponent, title: 'All Jobs' },
+
+
+
+    { 
+        path: 'jobs', 
+        component: JobListComponent, 
+        title: 'All Jobs'
+    },
+    { 
+        path: 'jobs/:id', 
+        component: JobDetailsComponent  , 
+        title: 'About'
+    },
     {
-  path: 'addJob',
-  component: AddJobComponent,
-  title: 'Add Job'
-},
+    path: 'addJob',
+    component: AddJobComponent,
+    title: 'Add Job'
+    },
+
+    {
+    path: 'jobs/:id/apply',
+    component: ApplicationComponent,
+    title: 'Apply for Job'
+    },
 
 {
-  path: 'jobs/:id/apply',
-  component: ApplicationComponent,
-  title: 'Apply for Job'
+    path:'**',
+    component: NotFoundComponent,
+    title:'Not found!'
 }
-
-
-
-
-    // { 
-    //     path: 'job/:id',
-    //     component: JobCardComponent,
-    //     title:'job'
-    // },
-    // { 
-    //     path: 'application',
-    //     component: Application,
-    //     title:'Apply for Job'
-    // }
-    
-    // {
-    //     path:'**',
-    //     component: NotFoundComponent,
-    //     title:'Not found'
-    // }
 ];

@@ -74,6 +74,7 @@ const searchJobs = async (req, res) => {
 // Get all jobs (with pagination & search)
 const getAllJobs = async (req, res) => {
     try {
+        
         const jobs = await Job.find().populate('postedBy', 'firstName lastName email');
         res.status(200).json({
             status: 'success',

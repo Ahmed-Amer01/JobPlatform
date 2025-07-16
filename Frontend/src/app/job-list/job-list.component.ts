@@ -13,10 +13,12 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './job-list.component.html',
   styleUrls: ['./job-list.component.css']
 })
-export class JobListComponent implements OnInit {
+export class JobListComponent {
   jobs: Job[] = [];
 
   constructor(private jobsService: JobsService) {}
+
+  
 
   ngOnInit() {
     this.jobsService.getAllJobs().subscribe((data) => {

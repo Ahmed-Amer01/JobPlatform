@@ -1,4 +1,4 @@
-<article class="job-card">
+<article class="job-card" [routerLink]="['/jobs', job._id]" >
   <header class="job-header">
     <div class="job-title-block">
       <h2 class="job-title">{{ job.title }}</h2>

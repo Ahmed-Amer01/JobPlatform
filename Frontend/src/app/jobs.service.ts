@@ -45,15 +45,18 @@ export class JobsService {
 }
 
 
+
   getAllJobs(): Observable<Job[]> {
     return this.http.get<{ status: string; data: Job[] }>(`${this.apiUrl}/jobs`).pipe(map(res => res.data));
   }
   
 
-  getJobById(id: string): Observable<Job> {
-    return this.http.get<{ status: string; data: Job }>(`${this.apiUrl}/job/${id}`)
-      .pipe(map(res => res.data));
-  }
+getJobById(id: string): Observable<Job> {
+  return this.http
+    .get<{ status: string; data: Job }>(`${this.apiUrl}/jobs/${id}`)
+    .pipe(map(res => res.data));
+}
+
 
 
   searchJobs(params: { title?: string; company?: string; location?: string }): Observable<Job[]> {
