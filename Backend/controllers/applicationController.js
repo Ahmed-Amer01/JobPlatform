@@ -6,11 +6,6 @@ const VALID_STATUSES = ['applied', 'under_review', 'interviewed', 'hired', 'reje
 
 // Create a new application
 const applyForJob = async (req, res) => {
-
-    // console.log('APPLYING FOR JOB');
-    // console.log('BODY:', req.body);            
-    // console.log('FILES:', req.files);             
-    // console.log('USER:', req.user);  
     try {
         const { jobId } = req.body;
         const candidateId = req.user._id;
