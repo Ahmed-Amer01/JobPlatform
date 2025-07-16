@@ -1,0 +1,46 @@
+@if (job) {
+  <div class="job-details">
+    <h1>{{ job.title }}</h1>
+    <h3>{{ job.company }}</h3>
+
+    <p><strong>Location:</strong> {{ job.location || 'Remote' }}</p>
+    <p><strong>Employment Type:</strong> {{ job.employmentType }}</p>
+    <p><strong>Views:</strong> {{ job.views }}</p>
+    <p><strong>Posted On:</strong> {{ job.createdAt | date: 'mediumDate' }}</p>
+
+    <section>
+      <h4>Description</h4>
+      <p>{{ job.description }}</p>
+    </section>
+
+    <section>
+      <h4>Requirements</h4>
+      <p>{{ job.requirements }}</p>
+    </section>
+
+    @if (job.skills.length > 0) {
+      <section>
+        <h4>Skills</h4>
+        <ul class="skills">
+          @for (skill of job.skills; track skill) {
+            <li class="tag">{{ skill }}</li>
+          }
+        </ul>
+      </section>
+    }
+
+    <section>
+      <h4>Posted By</h4>
+      <p>{{ job.postedBy.firstName }} {{ job.postedBy.lastName }}</p>
+      <p><strong>Email:</strong> {{ job.postedBy.email }}</p>
+    </section>
+
+    <footer>
+      <a [routerLink]="['/jobs', job._id, 'apply']" class="apply-button">
+        Apply Now
+      </a>
+    </footer>
+  </div>
+} @else {
+  <p>Loading job details...</p>
+}
