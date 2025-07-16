@@ -45,7 +45,7 @@ export const routes: Routes = [
         title: 'About'
     },
     {
-    path: 'addJob',
+    path: 'add-job',
     component: AddJobComponent,
     title: 'Add Job'
     },
