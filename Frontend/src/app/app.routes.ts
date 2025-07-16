@@ -9,6 +9,7 @@ import { AddJobComponent } from './add-job/add-job.component';
 import { ApplicationComponent } from './application/application.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProfileComponent } from './profile/profile.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -30,6 +31,12 @@ export const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         title:'Login'
+    },
+
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'My Profile'
     },
 
 

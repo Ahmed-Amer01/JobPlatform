@@ -1,0 +1,57 @@
+<div class="container mt-5">
+  @if (error) {
+    <div class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+  } @else {
+    <div class="card shadow-lg p-4 border-0 rounded-4 bg-light">
+      <div class="d-flex flex-column flex-md-row align-items-center text-center text-md-start">
+        <img 
+          [src]="'http://localhost:3000/' + user.photo"
+          alt="User Photo" 
+          class="rounded-circle border border-4 border-primary shadow-sm"
+          width="140" 
+          height="140"
+        />
+        <div class="ms-md-4 mt-3 mt-md-0">
+          <h3 class="fw-bold mb-1">{{ user.firstName }} {{ user.lastName }}</h3>
+          <p class="text-muted mb-2">
+            <i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}
+          </p>
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <i class="bi bi-telephone text-primary me-2"></i><strong>Phone:</strong> {{ user.phone }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <i class="bi bi-geo-alt text-danger me-2"></i><strong>Address:</strong> {{ user.address }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <i class="bi bi-calendar-date text-success me-2"></i><strong>Date of Birth:</strong> {{ user.dateOfBirth | date:'longDate' }}
+        </div>
+      </div>
+
+      @if (user.resume) {
+        <div class="text-center mt-4">
+          <a [href]="'http://localhost:3000/' + user.resume" target="_blank" 
+             class="btn btn-primary btn-lg rounded-pill px-4 py-2 shadow-sm resume-btn">
+            <i class="bi bi-file-earmark-text fs-5"></i> View Resume
+          </a>
+        </div>
+      }
+
+      <div class="d-flex justify-content-center justify-content-md-end mt-4 gap-3">
+        <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm edit-btn" (click)="editProfile()">
+          <i class="bi bi-pencil-square me-2"></i> Edit
+        </button>
+        <button class="btn btn-danger px-4 py-2 rounded-pill shadow-sm" (click)="deleteProfile()">
+          <i class="bi bi-trash me-2"></i> Delete
+        </button>
+      </div>
+    </div>
+  }
+</div>

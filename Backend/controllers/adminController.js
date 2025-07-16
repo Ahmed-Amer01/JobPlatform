@@ -91,7 +91,7 @@ const createAdmin = async (req, res) => {
             role: 'admin',
             photo: (req.files && req.files.photo && req.files.photo.length > 0 && req.files.photo[0].path)
                     ? req.files.photo[0].path
-                    : '/uploads/photos/defaultUserPhoto.jpg',
+                    : 'uploads/photos/defaultUserPhoto.jpg',
 
             resume: (req.files && req.files.resume && req.files.resume.length > 0 && req.files.resume[0].path)
                     ? req.files.resume[0].path
