@@ -70,7 +70,7 @@
 
             <!-- Address -->
             <div class="mb-3">
-              <label class="form-label">Address</label>
+              <label class="form-label">Address <span class="text-danger">*</span></label>
               <textarea class="form-control" formControlName="address" rows="2" placeholder="Enter your address"></textarea>
               @if(submitted && formControls['address'].errors) {
                 <div class="text-danger small">Address is required</div>

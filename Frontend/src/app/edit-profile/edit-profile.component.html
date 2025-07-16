@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Edit Profile</h2>
+
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="card p-4 shadow rounded">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">First Name</label>
+        <input formControlName="firstName" class="form-control" type="text" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Last Name</label>
+        <input formControlName="lastName" class="form-control" type="text" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input formControlName="email" class="form-control" type="email" />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Phone</label>
+        <input formControlName="phone" class="form-control" type="text" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Address</label>
+        <input formControlName="address" class="form-control" type="text" />
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Date of Birth</label>
+      <input formControlName="dateOfBirth" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Photo</label>
+      <input type="file" class="form-control" (change)="onFileChange($event, 'photo')" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Resume</label>
+      <input type="file" class="form-control" (change)="onFileChange($event, 'resume')" />
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary px-4" [disabled]="editForm.invalid">
+        <i class="bi bi-save"></i> Save Changes
+      </button>
+    </div>
+  </form>
+</div>

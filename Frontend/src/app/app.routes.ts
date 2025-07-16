@@ -12,6 +12,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { MyJobsComponent } from './my-jobs/my-jobs.component';
 import { UpdateJobComponent } from './update-job/update-job.component';
 import { JobApplicationsComponent } from './job-applications/job-applications.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -35,6 +37,17 @@ export const routes: Routes = [
         title:'Login'
     },
 
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'My Profile'
+    },
+
+    { 
+        path: 'edit-profile',
+        component: EditProfileComponent,
+        title: 'Edit Profile'
+    },
 
 
     { 
