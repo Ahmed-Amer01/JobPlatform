@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { JobsService } from '../jobs.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { JobsService } from '../services/jobs/jobs.service';
 
 @Component({
   selector: 'app-add-job',

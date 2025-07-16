@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JobsService, Job } from '../jobs.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { JobsService } from '../services/jobs/jobs.service';
+import { Job } from '../Interfaces/job/job';
 
 @Component({
   selector: 'app-job-details',

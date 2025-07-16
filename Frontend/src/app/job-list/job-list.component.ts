@@ -1,10 +1,11 @@
 // job-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { JobsService, Job } from '../jobs.service';
 import { JobCardComponent } from '../job-card/job-card.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { JobsService } from '../services/jobs/jobs.service';
+import { Job } from '../Interfaces/job/job';
 
 @Component({
   selector: 'app-job-list',
