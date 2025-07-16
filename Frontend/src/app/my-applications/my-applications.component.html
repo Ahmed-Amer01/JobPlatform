@@ -1,0 +1,23 @@
+<h2 class="applications-title">My Applications</h2>
+
+<section class="applications-wrapper">
+  @if (applications.length === 0) {
+    <p class="no-applications-msg">You haven't applied to any jobs yet.</p>
+  } @else {
+    <ul class="application-list">
+      @for (app of applications; track app._id) {
+        <li class="application-card">
+          <p><strong>Job Title:</strong> {{ app.jobId.title }}</p>
+          <p><strong>Company:</strong> {{ app.jobId.company }}</p>
+          <p><strong>Location:</strong> {{ app.jobId.location || 'Remote' }}</p>
+          <p><strong>Employment Type:</strong> {{ app.jobId.employmentType }}</p>
+          <p><strong>Resume:</strong> {{ app.resume || 'N/A' }}</p>
+          <p><strong>Cover Letter:</strong> {{ app.coverLetter || 'N/A' }}</p>
+
+          <button class="edit-btn" (click)="editApplication(app._id)">Edit</button>
+        </li>
+      }
+
+    </ul>
+  }
+</section>
