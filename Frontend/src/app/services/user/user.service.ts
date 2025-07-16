@@ -19,4 +19,19 @@ export class UserService {
   getProfile(): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile`, {headers: this.headers });
   }
+
+  updateProfile(data: any, photo?: File, resume?: File): Observable<any> {
+    const formData = new FormData();
+    Object.keys(data).forEach(field => {
+      if (data[field]) formData.append(field, data[field]);
+    });
+    if (photo) formData.append('photo', photo);
+    if (resume) formData.append('resume', resume);
+
+    return this.http.patch(`${this.apiUrl}/profile`, formData, { headers: this.headers });
+  }
+
+  deleteProfile(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/profile`, { headers: this.headers });
+  }
 }

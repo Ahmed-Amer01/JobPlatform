@@ -10,6 +10,7 @@ import { ApplicationComponent } from './application/application.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -39,6 +40,11 @@ export const routes: Routes = [
         title: 'My Profile'
     },
 
+    { 
+        path: 'edit-profile',
+        component: EditProfileComponent,
+        title: 'Edit Profile'
+    },
 
 
     { 
