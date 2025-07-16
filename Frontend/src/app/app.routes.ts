@@ -3,6 +3,13 @@ import { Routes } from '@angular/router';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { JobCardComponent } from './job-card/job-card.component';
+import { JobListComponent } from './job-list/job-list.component';
+import { AddJobComponent } from './add-job/add-job.component';
+import { ApplicationComponent } from './application/application.component';
+// import { Application } from './application/application.component';
+// import { JobsComponent } from './jobs/jobs.component';
+// import { JobCardComponent } from './job-card/job-card.component';
 
 export const routes: Routes = [
     { 
@@ -21,7 +28,33 @@ export const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         title:'Login'
-    }
+    },
+    { path: 'jobs', component: JobListComponent, title: 'All Jobs' },
+    {
+  path: 'addJob',
+  component: AddJobComponent,
+  title: 'Add Job'
+},
+
+{
+  path: 'jobs/:id/apply',
+  component: ApplicationComponent,
+  title: 'Apply for Job'
+}
+
+
+
+
+    // { 
+    //     path: 'job/:id',
+    //     component: JobCardComponent,
+    //     title:'job'
+    // },
+    // { 
+    //     path: 'application',
+    //     component: Application,
+    //     title:'Apply for Job'
+    // }
     
     // {
     //     path:'**',

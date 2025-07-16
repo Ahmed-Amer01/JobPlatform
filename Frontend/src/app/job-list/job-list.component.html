@@ -1,0 +1,18 @@
+<section>
+  <form (submit)="searchJobs()" class="search-form">
+    <input type="text" [(ngModel)]="searchParams.title" name="title" placeholder="Job title" />
+    <input type="text" [(ngModel)]="searchParams.company" name="company" placeholder="Company" />
+    <input type="text" [(ngModel)]="searchParams.location" name="location" placeholder="Location" />
+    <button type="submit">Search</button>
+  </form>
+
+
+  @if (jobs.length === 0) {
+    <p>No jobs found.</p>
+  } @else {
+    @for (job of jobs; track job._id) {
+      <app-job-card [job]="job"></app-job-card>
+    }
+  }
+
+</section>

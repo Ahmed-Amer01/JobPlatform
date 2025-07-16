@@ -6,11 +6,16 @@ const VALID_STATUSES = ['applied', 'under_review', 'interviewed', 'hired', 'reje
 
 // Create a new application
 const applyForJob = async (req, res) => {
+
+    // console.log('APPLYING FOR JOB');
+    // console.log('BODY:', req.body);            
+    // console.log('FILES:', req.files);             
+    // console.log('USER:', req.user);  
     try {
         const { jobId } = req.body;
         const candidateId = req.user._id;
 
-        const job = await Job.findById(jobId);
+    const job = await Job.findById(jobId);
     if (!job || !job.postedBy) {
             return res.status(404).json({ status: 'fail', message: 'Job not found' });
         }
@@ -19,9 +24,9 @@ const applyForJob = async (req, res) => {
             return res.status(400).json({ status: 'fail', message: 'This job is no longer active' });
         }
 
-        if (job.postedBy.toString() === candidateId.toString()) {
-            return res.status(400).json({ status: 'fail', message: 'You cannot apply to your own job' });
-        }
+        // if (job.postedBy.toString() === candidateId.toString()) {
+        //     return res.status(400).json({ status: 'fail', message: 'You cannot apply to your own job' });
+        // }
 
         const existingApp = await Application.findOne({ jobId, candidateId });
         if (existingApp) {

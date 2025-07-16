@@ -1,0 +1,34 @@
+<article class="job-card">
+  <header class="job-header">
+    <div class="job-title-block">
+      <h2 class="job-title">{{ job.title }}</h2>
+      <span class="employment-type">{{ job.employmentType }}</span>
+    </div>
+    <p class="company">{{ job.company }}</p>
+    <p class="location">{{ job.location || 'Remote' }}</p>
+  </header>
+
+  <section class="job-body">
+    <p class="description">
+      {{ job.description.slice(0, 150) }}...
+    </p>
+
+    @if (job.skills.length > 0) {
+      <ul class="skills">
+        @for (skill of job.skills; track skill) {
+          <li class="tag">{{ skill }}</li>
+        }
+      </ul>
+    }
+  </section>
+
+  <footer class="job-footer">
+    <button
+      class="apply-btn"
+      type="button"
+      [routerLink]="['/jobs', job._id, 'apply']">
+      Apply Now
+  </button>
+
+  </footer>
+</article>
