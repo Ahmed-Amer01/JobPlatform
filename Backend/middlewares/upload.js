@@ -1,51 +1,45 @@
 const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    let targetDir = '';
-
-    if (file.fieldname === 'photo') {
-      targetDir = path.join(__dirname, 'uploads/photos');
-    } else if (file.fieldname === 'resume') {
-      targetDir = path.join(__dirname, 'uploads/resumes');
-    } else if (file.fieldname === 'coverLetter') {
-      targetDir = path.join(__dirname, 'uploads/coverLetters');
-    } else {
-      return cb(new Error('Invalid file field'), null);
+    destination: (req, file, cb) => {
+        let ext = file.mimetype.split('/')[0];
+        if (ext === 'image') {
+            cb(null, 'uploads/photos');
+        }else if (
+            file.mimetype === 'application/pdf' || 
+            file.mimetype === 'application/msword' || 
+            file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ) {
+            cb(null, 'uploads/resumes');
+        } else {
+            // cb(new Error('Invalid file type!'), null);
+            return cb(new Error('Invalid file type!')); // No second argument
+        }
+    },
+    filename: (req, file, cb) => {
+        const ext = file.originalname.split('.').pop().toLowerCase();
+        const userId = req.user?.id || 'anonymous';
+        const filename = `${file.originalname.split('.')[0]}-${userId}-${Date.now()}.${ext}`;
+        cb(null, filename);
     }
-
-
-    fs.mkdirSync(targetDir, { recursive: true });
-
-    cb(null, targetDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = file.originalname.split('.').pop().toLowerCase();
-    const name = file.originalname.split('.')[0].replace(/\s+/g, '-'); // remove spaces
-    const userId = req.user?.id || req.user?._id || 'anonymous';
-    const filename = `${name}-${userId}-${Date.now()}.${ext}`;
-    cb(null, filename);
-  }
 });
 
 const fileFilter = (req, file, cb) => {
-  const ext = file.originalname.split('.').pop().toLowerCase();
-  if (file.fieldname === 'photo' && !['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-    return cb(new Error('Only image formats (jpg, jpeg, png, gif) are allowed'), false);
-  }
-  if ((file.fieldname === 'resume' || file.fieldname === 'coverLetter') && !['pdf', 'doc', 'docx', 'txt'].includes(ext)) {
-    return cb(new Error('Only resume/cover letter formats (pdf, doc, docx, txt) are allowed'), false);
-  }
-  cb(null, true);
+    // get the file extension from the original name last element of the split array
+    let ext = file.originalname.split('.').pop().toLowerCase();
+    if (file.fieldname === 'photo' && !['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
+        return cb(new Error('Only image formats (jpg, jpeg, png, gif) are allowed'), false);
+    }
+    if (file.fieldname === 'resume' && !['pdf', 'doc', 'docx', 'txt'].includes(ext)) {
+        return cb(new Error('Only resume formats (pdf, doc, docx, txt) are allowed'), false);
+    }
+    cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter }).fields([
-  { name: 'photo', maxCount: 1 },
-  { name: 'resume', maxCount: 1 },
-  { name: 'coverLetter', maxCount: 1 }
-]);
+const upload = multer({ storage, fileFilter })
+                .fields([
+                        { name: 'photo', maxCount: 1 },
+                        { name: 'resume', maxCount: 1 }
+                ]);
 
 module.exports = upload;
