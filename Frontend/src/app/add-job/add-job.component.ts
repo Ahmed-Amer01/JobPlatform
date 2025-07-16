@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JobsService } from '../services/jobs/jobs.service';
 
@@ -10,15 +10,17 @@ import { JobsService } from '../services/jobs/jobs.service';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-job.component.html',
   styleUrls: ['./add-job.component.css']
-
 })
-export class AddJobComponent {
+export class AddJobComponent implements OnInit {
   jobForm: FormGroup;
+  isUpdate = false;
+  jobId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private jobsService: JobsService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.jobForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
@@ -29,24 +31,42 @@ export class AddJobComponent {
       requirements: ['', [Validators.required, Validators.maxLength(10000)]],
       skills: ['', [Validators.required]]
     });
+  }
 
+  ngOnInit(): void {
+    this.jobId = this.route.snapshot.paramMap.get('jobId');
+
+    if (this.jobId) {
+      this.isUpdate = true;
+      this.jobsService.getJobById(this.jobId).subscribe(job => {
+        this.jobForm.patchValue({
+          ...job,
+          skills: job.skills?.join(', ')
+        });
+      });
+    }
   }
 
   submitJob() {
-    if (this.jobForm.invalid) 
-      return;
+    if (this.jobForm.invalid) return;
 
     const formValue = this.jobForm.value;
-
     const jobData = {
       ...formValue,
       skills: formValue.skills.split(',').map((s: string) => s.trim()),
       postedBy: JSON.parse(localStorage.getItem('user')!)._id
     };
 
-    this.jobsService.postJob(jobData).subscribe({
-      next: () => this.router.navigate(['/jobs']),
-      error: err => console.error('Failed to post job', err)
-    });
+    if (this.isUpdate && this.jobId) {
+      this.jobsService.updateJob(this.jobId, jobData).subscribe({
+        next: () => this.router.navigate(['/my-jobs']),
+        error: err => console.error('Failed to update job', err)
+      });
+    } else {
+      this.jobsService.postJob(jobData).subscribe({
+        next: () => this.router.navigate(['/my-jobs']),
+        error: err => console.error('Failed to post job', err)
+      });
+    }
   }
 }

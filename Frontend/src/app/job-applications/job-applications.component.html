@@ -1,0 +1,18 @@
+<h2 class="applications-title">Applications for: {{ jobTitle }}</h2>
+
+<section class="applications-wrapper">
+  @if (applications.length === 0) {
+    <p class="no-applications-msg">No applications submitted yet.</p>
+  } @else {
+    <ul class="application-list">
+      @for (app of applications; track app._id) {
+        <li class="application-card">
+          <p><strong>Name:</strong> {{ app.candidateId.firstName }} {{ app.candidateId.lastName }}</p>
+          <p><strong>Email:</strong> {{ app.candidateId.email }}</p>
+          <p><strong>Resume:</strong> {{ app.resume || 'N/A' }}</p>
+          <p><strong>Cover Letter:</strong> {{ app.coverLetter || 'N/A' }}</p>
+        </li>
+      }
+    </ul>
+  }
+</section>

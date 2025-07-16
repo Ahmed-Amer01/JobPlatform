@@ -1,0 +1,27 @@
+.my-jobs-title {
+  font-size: 1.8rem;
+  color: #003366;
+  margin: 1.5rem 0 1rem;
+  text-align: center;
+}
+
+.card{
+ width: 98%;
+  margin: 10px ;
+  padding: 10px;
+  box-shadow: rgba(60, 64, 67, 0.1) 0px 2px 4px 0px, rgba(60, 64, 67, 0.08) 0px 4px 8px 2px;
+  cursor: pointer;
+}
+
+.no-jobs-msg {
+  font-size: 1rem;
+  color: #777;
+  text-align: center;
+  margin: 2rem 0;
+  background-color: #fff;
+  padding: 1rem 2rem;
+  border: 1px solid #ddd;
+  border-left: 5px solid #0078d7;
+  border-radius: 6px;
+  box-shadow: rgba(60, 64, 67, 0.15) 0px 1px 3px;
+}

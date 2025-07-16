@@ -1,4 +1,9 @@
-<article class="job-card" [routerLink]="['/jobs', job._id]" >
+<article
+  class="job-card"
+  [class.clickable]="!showActions"
+  (click)="!showActions && navigateToJob(job._id)">
+
+
   <header class="job-header">
     <div class="job-title-block">
       <h2 class="job-title">{{ job.title }}</h2>
@@ -28,7 +33,17 @@
       type="button"
       [routerLink]="['/jobs', job._id, 'apply']">
       Apply Now
-  </button>
+    </button>
+
+    @if (showActions) {
+      <div class="actions">
+        <button class="edit-btn" (click)="onUpdate()">Edit</button>
+        <button class="delete-btn" (click)="onDelete()">Delete</button>
+        <button class="view-btn" (click)="onViewApplications()">Applications</button>
+      </div>
+    }
 
   </footer>
+
+
 </article>
