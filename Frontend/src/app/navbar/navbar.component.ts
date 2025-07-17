@@ -12,19 +12,13 @@ export class NavbarComponent {
   isLoggedIn = false;
   role: string | null = null;
 
-  guestLinks = [
-    { label: 'Home', route: '/' },
-    { label: 'Sign Up', route: '/sign-up' },
-    { label: 'Login', route: '/login' }
-  ];
-
-  userLinks = [
-    { label: 'Home', route: '/' },
-    { label: 'Profile', route: '/profile' }
-  ];
-
-  adminLinks = [
-    { label: 'profile', route: '/profile' }
+  links = [
+    { label: 'Home', route: '/', roles: ['guest', 'user', 'admin'] },
+    { label: 'Sign Up', route: '/sign-up', roles: ['guest'] },
+    { label: 'Login', route: '/login', roles: ['guest'] },
+    { label: 'Profile', route: '/profile', roles: ['user', 'admin'] },
+    { label: 'All Jobs', route: '/jobs', roles: ['user', 'admin'] },
+    { label: 'Admin Dashboard', route: '/admin', roles: ['admin'] }
   ];
 
   constructor(private authService: AuthService, private router: Router) {}

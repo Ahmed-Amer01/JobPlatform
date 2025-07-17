@@ -24,13 +24,11 @@ export const routes: Routes = [
         component: HomeComponent,
         title:'Home'
     },
-
     {
         path:'sign-up',
         component:SignUpComponent,
         title:'SignUp'
     },
-
     { 
         path: 'login',
         component: LoginComponent,
@@ -42,7 +40,6 @@ export const routes: Routes = [
         component: ProfileComponent,
         title: 'My Profile'
     },
-
     { 
         path: 'edit-profile',
         component: EditProfileComponent,
@@ -64,22 +61,21 @@ export const routes: Routes = [
         path: 'my-job/:jobId/edit', 
         component: AddJobComponent
     },
-
     { 
         path: 'jobs/:id', 
         component: JobDetailsComponent  , 
         title: 'About'
     },
     {
-    path: 'add-job',
-    component: AddJobComponent,
-    title: 'Add Job'
+        path: 'add-job',
+        component: AddJobComponent,
+        title: 'Add Job'
     },
 
     {
-    path: 'jobs/:id/apply',
-    component: ApplicationComponent,
-    title: 'Apply for Job'
+        path: 'jobs/:id/apply',
+        component: ApplicationComponent,
+        title: 'Apply for Job'
     },
 
     {

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class JobCardComponent {
   @Input() job: any;
-  @Input() showActions = false;
+  @Input() showActions: boolean = false;
 
   @Output() update = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
