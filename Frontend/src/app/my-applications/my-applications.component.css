@@ -1,0 +1,57 @@
+.applications-title {
+  text-align: center;
+  font-size: 1.6rem;
+  color: #003366;
+  margin-bottom: 2rem;
+  margin: 20px;
+}
+
+.applications-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.application-list {
+  list-style: none;
+  padding: 0;
+}
+
+.application-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 5px solid #0078d7;
+  box-shadow: rgba(14, 30, 37, 0.1) 0px 2px 4px;
+  margin-bottom: 1.5rem;
+}
+
+.resume-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: #0056b3;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.no-applications-msg {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #777;
+}
+
+.edit-btn {
+  background-color: #0078d4;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.edit-btn:hover {
+  background-color: #005fa3;
+}
