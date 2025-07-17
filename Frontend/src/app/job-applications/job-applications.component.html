@@ -12,6 +12,7 @@
           <p><strong>Phone:</strong> {{ app.candidateId.phone }}</p>
           <p><strong>Address:</strong> {{ app.candidateId.address }}</p>
           <p><strong>Date of Birth:</strong> {{ app.candidateId.dateOfBirth | date:'longDate'}}</p>
+          <p><strong>Status:</strong> {{ app.status}}</p>
           <div class="text-center mt-4">
             <a [href]="'http://localhost:3000/' + app.resume" target="_blank" 
               class="btn btn-primary btn-lg rounded-pill px-4 py-2 shadow-sm resume-btn">
@@ -28,6 +29,16 @@
           }@else{
             <p><strong>Cover Letter:</strong> {{ app.coverLetter || 'N/A' }}</p>
           }
+
+          <div class="status-update">
+            <select [(ngModel)]="app.newStatus" class="form-select">
+              <option value="" disabled>Select Status</option>
+              @for (status of statuses; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+            <button class="btn btn-success mt-2" (click)="updateStatus(app)">Update Status</button>
+          </div>
         </li>
       }
     </ul>

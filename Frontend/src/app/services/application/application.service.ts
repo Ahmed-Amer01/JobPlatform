@@ -61,4 +61,12 @@ export class ApplicationService {
     return this.http.delete(`${this.apiUrl}/${applicationId}`, { headers });
   }
 
+  updateApplicationStatus(appId: string, status: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http.patch(`${this.apiUrl}/${appId}/status`, { status }, { headers });
+  }
+
+
 }
