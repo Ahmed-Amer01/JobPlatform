@@ -34,21 +34,10 @@
               <i class="bi bi-person-circle"></i> Account
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person"></i> Profile</a></li>
-              @if (role === 'user') {
-                <li><a class="dropdown-item" routerLink="/my-jobs"><i class="bi bi-person"></i> My Jobs</a></li>
-              }
-              @if (role === 'admin') {
-                <li><a class="dropdown-item" routerLink="/admin"><i class="bi bi-speedometer2"></i> Admin Dashboard</a></li>
-              }
-              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item text-danger" href="" (click)="logout()"><i class="bi bi-person"></i> Logout</a></li>
             </ul>
           </li>
         }
-
-        <a routerLink="/admin/users">Manage Users</a>
-
 
       </ul>
     </div>

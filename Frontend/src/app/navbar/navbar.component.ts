@@ -18,7 +18,10 @@ export class NavbarComponent {
     { label: 'Login', route: '/login', roles: ['guest'] },
     { label: 'Profile', route: '/profile', roles: ['user', 'admin'] },
     { label: 'All Jobs', route: '/jobs', roles: ['user', 'admin'] },
-    { label: 'Admin Dashboard', route: '/admin', roles: ['admin'] }
+    { label: 'Edit Profile', route: '/edit-profile', roles: ['user', 'admin'] },
+    { label: 'My Jobs', route: '/my-jobs', roles: ['user'] },
+    { label: 'Add Job', route: '/add-job', roles: ['user'] },
+    { label: 'My Applications', route: '/my-applications', roles: ['user'] }
   ];
 
   constructor(private authService: AuthService, private router: Router) {}
