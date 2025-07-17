@@ -17,6 +17,8 @@ import { MyApplicationsComponent } from './my-applications/my-applications.compo
 import { CandidateApplicationsComponent } from './candidate-applications/candidate-applications.component';
 import { ApplicationsByJobComponent } from './applications-by-job/applications-by-job.component';
 import { UpdateApplicationComponent } from './update-application/update-application.component';
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 // import { Application } from './application/application.component';
 // import { JobsComponent } from './jobs/jobs.component';
 // import { JobCardComponent } from './job-card/job-card.component';
@@ -27,19 +29,27 @@ export const routes: Routes = [
         component: HomeComponent,
         title:'Home'
     },
-
     {
         path:'sign-up',
         component:SignUpComponent,
         title:'SignUp'
     },
-
     { 
         path: 'login',
         component: LoginComponent,
         title:'Login'
     },
 
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        title: 'My Profile'
+    },
+    { 
+        path: 'edit-profile',
+        component: EditProfileComponent,
+        title: 'Edit Profile'
+    },
 
 
     { 
@@ -56,22 +66,21 @@ export const routes: Routes = [
         path: 'my-job/:jobId/edit', 
         component: AddJobComponent
     },
-
     { 
         path: 'jobs/:id', 
         component: JobDetailsComponent  , 
         title: 'About'
     },
     {
-    path: 'add-job',
-    component: AddJobComponent,
-    title: 'Add Job'
+        path: 'add-job',
+        component: AddJobComponent,
+        title: 'Add Job'
     },
 
     {
-    path: 'jobs/:id/apply',
-    component: ApplicationComponent,
-    title: 'Apply for Job'
+        path: 'jobs/:id/apply',
+        component: ApplicationComponent,
+        title: 'Apply for Job'
     },
 
     {

@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: '/uploads/photos/defaultUserPhoto.jpeg',
+        default: 'uploads\photos\defaultUserPhoto.jpg',
         validate: {
             validator: function(v) {
             return /\.(jpg|jpeg|png|gif)$/i.test(v) || validator.isURL(v);

@@ -5,13 +5,23 @@
     <input type="text" [(ngModel)]="searchParams.location" name="location" placeholder="Location" />
     <button type="submit">Search</button>
   </form>
-
+  
+  <div class="d-flex justify-content-end mb-3">
+    <a routerLink="/add-job" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+      <i class="bi bi-plus-circle me-2"></i> Add Job
+    </a>
+  </div>
 
   @if (jobs.length === 0) {
     <p>No jobs found.</p>
   } @else {
     @for (job of jobs; track job._id) {
-      <app-job-card [job]="job"></app-job-card>
+      <app-job-card [job]="job" 
+                    [showActions]="compareIds(job.postedBy)"
+                    (update)="updateJob(job._id)"
+                    (delete)="deleteJob(job._id)"
+                    (view)="navigateToDetails(job._id)"
+                    (viewApplications)="viewApplications(job._id)"></app-job-card>
     }
   }
 

@@ -1,42 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
   <div class="container">
-    <!-- Brand -->
     <a class="navbar-brand fw-bold" routerLink="/">Job<span class="text-warning">Platform</span></a>
 
-    <!-- Menu Items -->
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
 
-        <!--Guest Links -->
+        <!-- Public Links (guest) -->
         @if (!isLoggedIn) {
-          @for (link of guestLinks; track link.label) {
-            <li class="nav-item">
-              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
-            </li>
+          @for (link of links; track link.label) {
+            @if (link.roles.includes('guest')) {
+              <li class="nav-item">
+                <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
+              </li>
+            }
           }
         }
 
-        <!--User Links -->
-        @if (isLoggedIn && role === 'user') {
-          @for (link of userLinks; track link.label) {
-            <li class="nav-item">
-              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
-            </li>
+        <!-- Authenticated Links -->
+        @if (isLoggedIn) {
+          <!-- Main Navigation Links -->
+          @for (link of links; track link.label) {
+            @if (role && link.roles.includes(role)) {
+              <li class="nav-item">
+                <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
+              </li>
+            }
           }
-          <li class="nav-item">
-            <a class="nav-link text-white fw-semibold" href="" (click)="logout()">Logout</a>
-          </li>
-        }
 
-        <!--Admin Links -->
-        @if (isLoggedIn && role === 'admin') {
-          @for (link of adminLinks; track link.label) {
-            <li class="nav-item">
-              <a class="nav-link text-white fw-semibold" [routerLink]="link.route">{{ link.label }}</a>
-            </li>
-          }
-          <li class="nav-item">
-            <a class="nav-link text-white fw-semibold" href="" (click)="logout()">Logout</a>
+          <!-- Dropdown for Account -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" id="userDropdown" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> Account
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person"></i> Profile</a></li>
+              @if (role === 'user') {
+                <li><a class="dropdown-item" routerLink="/my-jobs"><i class="bi bi-person"></i> My Jobs</a></li>
+              }
+              @if (role === 'admin') {
+                <li><a class="dropdown-item" routerLink="/admin"><i class="bi bi-speedometer2"></i> Admin Dashboard</a></li>
+              }
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="" (click)="logout()"><i class="bi bi-person"></i> Logout</a></li>
+            </ul>
           </li>
         }
 

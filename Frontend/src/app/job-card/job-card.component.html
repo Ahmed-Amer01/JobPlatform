@@ -1,49 +1,70 @@
-<article
-  class="job-card"
-  [class.clickable]="!showActions"
-  (click)="!showActions && navigateToJob(job._id)">
-
-
-  <header class="job-header">
-    <div class="job-title-block">
-      <h2 class="job-title">{{ job.title }}</h2>
-      <span class="employment-type">{{ job.employmentType }}</span>
-    </div>
-    <p class="company">{{ job.company }}</p>
-    <p class="location">{{ job.location || 'Remote' }}</p>
-  </header>
-
-  <section class="job-body">
-    <p class="description">
-      {{ job.description.slice(0, 150) }}...
-    </p>
-
-    @if (job.skills.length > 0) {
-      <ul class="skills">
-        @for (skill of job.skills; track skill) {
-          <li class="tag">{{ skill }}</li>
-        }
-      </ul>
-    }
-  </section>
-
-  <footer class="job-footer">
-    <button
-      class="apply-btn"
-      type="button"
-      [routerLink]="['/jobs', job._id, 'apply']">
-      Apply Now
-    </button>
-
-    @if (showActions) {
-      <div class="actions">
-        <button class="edit-btn" (click)="onUpdate()">Edit</button>
-        <button class="delete-btn" (click)="onDelete()">Delete</button>
-        <button class="view-btn" (click)="onViewApplications()">Applications</button>
+<div class="container my-3">
+  <article class="job-card p-3 rounded-3 shadow-sm bg-white border hover-effect"
+           [class.clickable]="!showActions"
+           (click)="navigateToJob(job._id)">
+    
+    <header class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+      <div>
+        <h4 class="fw-bold text-primary mb-1">
+          {{ job.title }}
+        </h4>
+        <p class="mb-1 text-muted small">
+          <i class="bi bi-building text-primary me-2"></i><strong>company:</strong> {{ job.company }}
+        </p>
+        <p class="mb-1 text-muted small">
+          <i class="bi bi-geo-alt text-danger me-2"></i><strong>location:</strong> {{ job.location || 'Remote' }}
+        </p>
       </div>
+
+      <div class="mt-2 mt-md-0">
+        <span class="badge bg-primary text-light ms-2 px-3 py-2">{{ job.employmentType }}</span>
+        @if (job.isActive) {
+          <span class="badge bg-success ms-2 px-3 py-2">Active</span>
+        } @else {
+          <span class="badge bg-danger ms-2 px-3 py-2">Closed</span>
+        }
+      </div>
+    </header>
+
+    <section class="job-body mb-2">
+      <p class="text-secondary" style="max-height: 60px; overflow: hidden; text-overflow: ellipsis;">
+        {{ job.description }}
+      </p>
+    </section>
+
+    @if (job.skills && job.skills.length > 0) {
+      <section class="mb-3">
+        <ul class="list-inline mb-0">
+          @for (skill of job.skills; track skill) {
+            <li class="list-inline-item">
+              <span class="badge bg-light text-dark border">{{ skill }}</span>
+            </li>
+          }
+        </ul>
+      </section>
     }
 
-  </footer>
+    <footer class="d-flex justify-content-between align-items-center mt-3">
+      @if (!showActions) {
+        <button class="btn btn-primary btn-sm" [routerLink]="['/jobs', job._id, 'apply']">
+          Apply Now
+        </button>
+      }
 
+      @if (showActions) {
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary btn-sm" (click)="onUpdate(); $event.stopPropagation()">
+            <i class="bi bi-pencil-square"></i> Edit
+          </button>
+          <button class="btn btn-success btn-sm text-white" (click)="onViewApplications(); $event.stopPropagation()">
+            <i class="bi bi-people"></i> Applications
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete(); $event.stopPropagation()">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </div>
+      }
+    </footer>
 
-</article>
+  </article>
+</div>

@@ -31,12 +31,12 @@ const searchJobs = async (req, res) => {
         company = company ? company.trim() : '';
         location = location ? location.trim() : '';
 
-        if (!title && !company && !location) {
-            return res.status(400).json({
-                status: 'fail',
-                message: 'Please provide at least one search parameter (title, company, or location)'
-            });
-        }
+        // if (!title && !company && !location) {
+        //     return res.status(400).json({
+        //         status: 'fail',
+        //         message: 'Please provide at least one search parameter (title, company, or location)'
+        //     });
+        // }
 
         const filter = {};
         const conditions = [];

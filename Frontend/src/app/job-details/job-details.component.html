@@ -31,12 +31,12 @@
 
     <section>
       <h4>Posted By</h4>
-      <p>{{ job.postedBy.firstName }} {{ job.postedBy.lastName }}</p>
-      <p><strong>Email:</strong> {{ job.postedBy.email }}</p>
+      <p>{{ job.postedBy?.firstName }} {{ job.postedBy?.lastName }}</p>
+      <p><strong>Email:</strong> {{ job.postedBy?.email }}</p>
     </section>
 
     <footer>
-      <a [routerLink]="['/jobs', job._id, 'apply']" class="apply-button">
+      <a class="apply-button" [routerLink]="['/jobs', job._id, 'apply']">
         Apply Now
       </a>
     </footer>

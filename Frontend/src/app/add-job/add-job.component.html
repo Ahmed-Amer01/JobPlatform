@@ -2,22 +2,31 @@
 
 <form [formGroup]="jobForm" (ngSubmit)="submitJob()" class="job-form">
   <div class="form-group">
-    <label>Title</label>
+    <label>Title<span class="text-danger">*</span></label>
     <input formControlName="title" type="text" required />
+    @if (jobForm.get('title')?.invalid && jobForm.get('title')?.touched) {
+      <small class="text-danger">Title is required (max 100 characters).</small>
+    }
   </div>
 
   <div class="form-group">
-    <label>Company</label>
+    <label>Company<span class="text-danger">*</span></label>
     <input formControlName="company" type="text" required />
+    @if (jobForm.get('company')?.invalid && jobForm.get('company')?.touched) {
+      <small class="text-danger">Company name is required (max 100 characters).</small>
+    }
   </div>
 
   <div class="form-group">
     <label>Location</label>
     <input formControlName="location" type="text" placeholder="e.g.,  Cairo" />
+    @if (jobForm.get('location')?.invalid && jobForm.get('location')?.touched) {
+      <small class="text-danger">Location cannot exceed 100 characters.</small>
+    }
   </div>
 
   <div class="form-group">
-    <label>Employment Type</label>
+    <label>Employment Type<span class="text-danger">*</span></label>
     <select formControlName="employmentType">
       <option value="full-time">Full-time</option>
       <option value="part-time">Part-time</option>
@@ -26,18 +35,27 @@
   </div>
 
   <div class="form-group">
-    <label>Description</label>
+    <label>Description<span class="text-danger">*</span></label>
     <textarea formControlName="description"></textarea>
+    @if (jobForm.get('description')?.invalid && jobForm.get('description')?.touched) {
+      <small class="text-danger">Description is required.</small>
+    }
   </div>
 
   <div class="form-group">
-    <label>Requirements</label>
+    <label>Requirements<span class="text-danger">*</span></label>
     <textarea formControlName="requirements"></textarea>
+    @if (jobForm.get('requirements')?.invalid && jobForm.get('requirements')?.touched) {
+      <small class="text-danger">Requirements are required.</small>
+    }
   </div>
 
   <div class="form-group">
-    <label>Skills (comma-separated)</label>
+    <label>Skills (comma-separated)<span class="text-danger">*</span></label>
     <input formControlName="skills" type="text" placeholder="e.g., Angular, TypeScript" />
+    @if (jobForm.get('skills')?.invalid && jobForm.get('skills')?.touched) {
+      <small class="text-danger">Skills are required.</small>
+    }
   </div>
 
   <div class="submit">
