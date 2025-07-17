@@ -38,8 +38,8 @@ const applyForJob = async (req, res) => {
         const application = new Application({
             jobId,
             candidateId,
-            resume: resumeFile ? `/uploads/resumes/${resumeFile.filename}` : undefined,
-            coverLetter: coverLetterFile ? `/uploads/coverLetters/${coverLetterFile.filename}` : undefined
+            resume: resumeFile ? `uploads/resumes/${resumeFile.filename}` : undefined,
+            coverLetter: coverLetterFile ? `uploads/resumes/${coverLetterFile.filename}` : undefined
         });
 
         const savedApp = await application.save();
@@ -124,8 +124,8 @@ const updateApplication = async (req, res) => {
         const resumeFile = req.files?.resume?.[0];
         const coverLetterFile = req.files?.coverLetter?.[0];
 
-        if (resumeFile) app.resume = `/uploads/resumes/${resumeFile.filename}`;
-        if (coverLetterFile) app.coverLetter = `/uploads/coverLetters/${coverLetterFile.filename}`;
+        if (resumeFile) app.resume = `uploads/resumes/${resumeFile.filename}`;
+        if (coverLetterFile) app.coverLetter = `uploads/resumes/${coverLetterFile.filename}`;
 
         await app.save();
 

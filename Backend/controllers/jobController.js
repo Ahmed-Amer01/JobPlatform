@@ -267,7 +267,7 @@ const getJobApplications = async (req, res) => {
             path: 'applications',
             populate: {
                 path: 'candidateId',
-                select: 'firstName lastName email'
+                select: 'firstName lastName email phone address dateOfBirth'
             }
         });
 

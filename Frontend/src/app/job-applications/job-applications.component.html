@@ -9,8 +9,25 @@
         <li class="application-card">
           <p><strong>Name:</strong> {{ app.candidateId.firstName }} {{ app.candidateId.lastName }}</p>
           <p><strong>Email:</strong> {{ app.candidateId.email }}</p>
-          <p><strong>Resume:</strong> {{ app.resume || 'N/A' }}</p>
-          <p><strong>Cover Letter:</strong> {{ app.coverLetter || 'N/A' }}</p>
+          <p><strong>Phone:</strong> {{ app.candidateId.phone }}</p>
+          <p><strong>Address:</strong> {{ app.candidateId.address }}</p>
+          <p><strong>Date of Birth:</strong> {{ app.candidateId.dateOfBirth | date:'longDate'}}</p>
+          <div class="text-center mt-4">
+            <a [href]="'http://localhost:3000/' + app.resume" target="_blank" 
+              class="btn btn-primary btn-lg rounded-pill px-4 py-2 shadow-sm resume-btn">
+              <i class="bi bi-file-earmark-text fs-5"></i> View Resume
+            </a>
+          </div>
+          @if(app?.coverLetter){
+            <div class="text-center mt-4">
+              <a [href]="'http://localhost:3000/' + app.coverLetter" target="_blank" 
+                class="btn btn-primary btn-lg rounded-pill px-4 py-2 shadow-sm resume-btn">
+                <i class="bi bi-file-earmark-text fs-5"></i> View Cover Letter
+              </a>
+            </div>
+          }@else{
+            <p><strong>Cover Letter:</strong> {{ app.coverLetter || 'N/A' }}</p>
+          }
         </li>
       }
     </ul>
