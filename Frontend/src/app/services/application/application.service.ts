@@ -54,5 +54,11 @@ export class ApplicationService {
 
   return this.http.post(this.apiUrl, formData, { headers });}
 
+  deleteApplication(applicationId: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    return this.http.delete(`${this.apiUrl}/${applicationId}`, { headers });
+  }
 
 }
