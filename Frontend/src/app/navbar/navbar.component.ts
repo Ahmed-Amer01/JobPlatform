@@ -17,10 +17,10 @@ export class NavbarComponent {
     { label: 'Sign Up', route: '/sign-up', roles: ['guest'] },
     { label: 'Login', route: '/login', roles: ['guest'] },
     { label: 'Profile', route: '/profile', roles: ['user', 'admin'] },
-    { label: 'All Jobs', route: '/jobs', roles: ['user', 'admin'] },
     { label: 'Edit Profile', route: '/edit-profile', roles: ['user', 'admin'] },
-    { label: 'My Jobs', route: '/my-jobs', roles: ['user'] },
     { label: 'Add Job', route: '/add-job', roles: ['user'] },
+    { label: 'All Jobs', route: '/jobs', roles: ['user', 'admin'] },
+    { label: 'My Jobs', route: '/my-jobs', roles: ['user'] },
     { label: 'My Applications', route: '/my-applications', roles: ['user'] }
   ];
 
